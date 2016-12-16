@@ -96,7 +96,7 @@ function reset() {
     context = new (window.AudioContext || window.webkitAudioContext)()
     context.suspend();
     instr_changed = true;
-
+    generateSong();
 }
 
 function setupInstruments(num_instruments) {
@@ -182,8 +182,17 @@ function regenerateSequence(index) {
     role_stack[index].regenerateSequence();
 }
 
+function regenerateStepsAll() {
+    // regen bars
+    generateSteps();
+    role_stack.forEach(function(role) {
+	role.sequence.bar_length = bar_length;
+	role.regenerateSequence();
+    });
+    position = 0;
+}
+
 function muteRole(index) {
-    
     var button = '#mute-' + index + '';
     console.log(button);
     if (role_stack[index].mute == true) {
@@ -204,11 +213,13 @@ function displayParameters() {
     $('#details').append('<div><b>Scale:</b> ' + base_scale.type + '</br>');
 
     var display_pos = position +1;
+        $('#details').append('<button type="button" onClick="regenerateStepsAll()" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-retweet"></span></button>');
     $('#details').append('<b>Steps:</b> ' + display_pos + '/' + bar_length + '</br>');
 
 
-    $('#details').append('<b>Tempo (BPM):</b> ' + tempo + '  ');
-    $('#details').append('<button type="button" onClick="generateTempo()" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-retweet"></span></button></br>');
+    $('#details').append('<button type="button" onClick="generateTempo()" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-retweet"></span></button>');
+    $('#details').append('<b>Tempo (BPM):</b> ' + tempo + '  ' + '</br>');
+
 
     if (instr_changed) {
 	$('#instruments').empty();
