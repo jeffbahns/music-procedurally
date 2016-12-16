@@ -8,7 +8,7 @@ Sequence.prototype.generateRandomSequence = function() {
     var seq = "";
     for (var i = 0; i < this.bar_length; i++) {
 	randominty = randomInt(0, this.scale_size+1);
-	if (randominty == this.scale_size+1) 
+	if (randominty == this.scale_size+1)
 	    seq += '-';
 	else
 	    seq += randominty;	    

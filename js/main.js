@@ -4,7 +4,7 @@ var context = new (window.AudioContext || window.webkitAudioContext)()
 context.suspend(); 
 var on = false;
 var paused = false;
-
+var instr_changed = true;;
 // front end related
 redisplay = false;
 
@@ -29,6 +29,9 @@ function generateSong() {
     if (paused && role_stack.length != 0) {
 	return play();
     }
+    if (on) {
+	return;
+    }
     bar_length = randomInt(4, 32);
     generateTempo();
     generateSteps();
@@ -45,11 +48,13 @@ function play() {
     if (role_stack.length == 0) {
 	return generateSong()
     }
+
     context.resume();
+    console.log("resumed");
     on = true
     setInterval(scheduler, 100);
 }
-vv
+
 function nextNote() {
     // Advance current note and time by a 16th note...
     var secondsPerBeat = 120 / tempo;	// picks up the CURRENT tempo value!
@@ -63,12 +68,10 @@ function nextNote() {
 function scheduler() {
     if (!on)
 	return
-
     while(nextNoteTime < context.currentTime+ scheduleAheadTime){ // + scheduleAheadTime){
 	playCursor();
 	nextNote();
-	//if (redisplay)
-	    displayParameters();
+	displayParameters();
     }
 }
     
@@ -87,8 +90,13 @@ function pause() {
 function reset() {
     role_stack = [];
     on = false;
+    nextNoteTime = 0;
     position = 0;
+    context.close()
+    context = new (window.AudioContext || window.webkitAudioContext)()
     context.suspend();
+    instr_changed = true;
+
 }
 
 function setupInstruments(num_instruments) {
@@ -107,7 +115,7 @@ function setupInstruments(num_instruments) {
 	else {
 	    scale = base_scale;
 	}
-	var role = new Role(scale, sequencer, context, new Instrument("synth", context));
+	var role = new Role(scale, sequencer, context, new Instrument("bass-synth", context));
 	role_stack.push(role);
     }
 
@@ -125,12 +133,12 @@ function setupInstruments2() {
     scale.dropOctave();
     scale.dropOctave();
     scale.dropOctave();
-    var role = new Role(scale, sequencer, context, new Instrument("synth", context));
+    var role = new Role(scale, sequencer, context, new Instrument("bass-synth", context));
     role_stack.push(role);
     
     //instrument 2 - lead type synth
     var sequencer = new Sequence(bar_length, base_scale.size());
-    var instrument = new Instrument("synth", context, 300);
+    var instrument = new Instrument("lead-synth", context, 300);
     var scale = new Scale(base_scale.root_note, base_scale.type);
     scale.dropOctave();
     var role = new Role(scale, sequencer, context, instrument);
@@ -138,14 +146,14 @@ function setupInstruments2() {
     
     //instrument 3
     //instrument 1 - bass type synth
-    var sequencer = new Sequence(bar_length, base_scale.size());
+    var sequencer = new Sequence(bar_length, base_scale.size()+5);
     var instrument = new Instrument("synth", context, 300);
     var scale = new Scale(base_scale.root_note, base_scale.type);
     scale.dropOctave();
     scale.dropOctave();
     scale.dropOctave();
-    var role = new Role(scale, sequencer, context, new Instrument("synth", context));
-    //role_stack.push(role);
+    var role = new Role(scale, sequencer, context, new Instrument("mid-synth", context));
+    role_stack.push(role);
     
 }
 
@@ -162,16 +170,35 @@ function createDrums() {
 }
 
 function generateTempo() {
-    tempo = randomInt(40, 160);
+    tempo = randomInt(40, 220);
     redisplay = true;
 }
 function generateSteps() {
-    bar_length = randomInt(2, 32);
+    bar_length = randomInt(2, 24);
     redisplay = true;
 }
+
+function regenerateSequence(index) {
+    role_stack[index].regenerateSequence();
+}
+
+function muteRole(index) {
+    
+    var button = '#mute-' + index + '';
+    console.log(button);
+    if (role_stack[index].mute == true) {
+	$(button).innerHTML = "mute";
+    }
+    else {
+	$(button).innerHTML = "unmute";
+    }
+    role_stack[index].mutes();
+    instr_changed = true;
+}
+
 function displayParameters() {
     $('#details').empty();
-    $('#instruments').empty();
+    
     
     $('#details').append('<div><b>Root Note:</b> ' + base_scale.root_note + '</br>');
     $('#details').append('<div><b>Scale:</b> ' + base_scale.type + '</br>');
@@ -181,10 +208,35 @@ function displayParameters() {
 
 
     $('#details').append('<b>Tempo (BPM):</b> ' + tempo + '  ');
-        $('#details').append('<button type="button" onClick=generateTempo() class="btn btn-xs btn-default"><span class="glyphicon glyphicon-retweet"></span></button><button<span class="glyphicon glyphicons-retweet"></span></br>');
+    $('#details').append('<button type="button" onClick="generateTempo()" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-retweet"></span></button></br>');
 
-    role_stack.forEach(function(role) {
-	$('#instruments').append(role.display());
-    })
+    if (instr_changed) {
+	$('#instruments').empty();
+	for (var i = 0; i < role_stack.length; i++) {
+	    $('#instruments').append(role_stack[i].display());
+	    $('#instruments').append('</br><button type="button" onClick="regenerateSequence(' + i + ')" class="btn btn-xs btn-default">Regenerate <span class="glyphicon glyphicon-retweet"></span></button>');
+	    var mute_display;
+	    if (role_stack[i].mute == true)
+		mute_display = "Unmute";
+	    else
+		mute_display = "Mute";
+	    $('#instruments').append('<button type="button" value="' + role_stack[i].mute + '" id="mute-' + i + '"onClick="muteRole(' + i + ')" class="btn btn-xs btn-default">' + mute_display + '</button></br></br>');
+
+	    /*
+	    if(role_stack[i].mute)
+		$('#mute' + role_stack[i].type  + '').prop('checked', false);
+	    else
+		$('#mute' + role_stack[i].type + '').prop('checked', true);
+
+	    $('#' + role_stack[i].type + '').click(function(){
+		muteRole(i);
+	    })
+	    */
+	}
+	
+
+	instr_changed = false;
+    }
+
     redisplay = false;
 }

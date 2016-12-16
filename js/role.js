@@ -4,6 +4,7 @@ var Role = function(scale, sequence, audio_context, instrument) {
     this.scale = scale;
     this.sequence = sequence;
     this.instrument = instrument;
+    this.mute = false;
 };
 
 Role.prototype.play = function(position) {
@@ -12,7 +13,7 @@ Role.prototype.play = function(position) {
     var freq = this.scale.notes[note];
 
     // if there is a rest note, undefined because note search blows up
-    if (note == undefined) {
+    if (note == undefined || this.mute) {
 	// dont do shit
 	//console.log("(" + note + " : " + freq + ")");
 	return ;
@@ -23,6 +24,18 @@ Role.prototype.play = function(position) {
 
 Role.prototype.display = function() {
     display = '';
-    display += '<b>Instrument:</b> ' + this.type + '</br>';
+    //display += '<input id=' + this.type + ' type=checkbox><label></label>'
+    display += '<b>Instrument:</b> ' + this.type;
     return display;
+}
+
+Role.prototype.regenerateSequence = function() {
+    console.log("Old : " + this.sequence.seq);
+    this.sequence.seq = this.sequence.generateRandomSequence();
+    console.log("New : " + this.sequence.seq);
+}
+
+Role.prototype.mutes = function() {
+    console.log("muting " + this.type);
+    this.mute = !this.mute;
 }

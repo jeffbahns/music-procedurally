@@ -1,8 +1,17 @@
+
+var oscillator_waves = [
+    "sine",
+    "triangle",
+    "sawtooth",
+    "square",
+]
+
 var Instrument = function(type, context, decay) {
     this.type = type;
     this.context = context;
-    if (this.type != "kick" or "snare") {
-	this.decay = randomInt(3000,3000);	
+    if (this.type != "kick" && this.type != "snare") {
+	this.decay = randomInt(250,1500);
+	this.wave_type = oscillator_waves[randomInt(0,4)];
     }
     this.mute = false;
 }
@@ -48,7 +57,7 @@ Instrument.prototype.setupSnare = function() {
     this.noise.buffer = this.noiseBuffer();
     var noiseFilter = this.context.createBiquadFilter();
     noiseFilter.type = 'highpass';
-    noiseFilter.frequency.value = 1000;
+    noiseFilter.frequency.value = 100;
     this.noise.connect(noiseFilter);
     this.noiseEnvelope = this.context.createGain();
     noiseFilter.connect(this.noiseEnvelope);
@@ -66,8 +75,8 @@ Instrument.prototype.setupSnare = function() {
 Instrument.prototype.triggerKick = function(time) {
     this.setupKick();
 
-    this.osc.frequency.setValueAtTime(150, time);
-    this.gain.gain.setValueAtTime(1, time);
+    this.osc.frequency.setValueAtTime(100, time);
+    this.gain.gain.setValueAtTime(50, time);
 
     this.osc.frequency.exponentialRampToValueAtTime(0.01, time + 0.5);
     this.gain.gain.exponentialRampToValueAtTime(0.01, time + 0.5);
@@ -102,7 +111,7 @@ Instrument.prototype.playOscillator = function(freq) {
     this.gain.gain.linearRampToValueAtTime(0, this.context.currentTime + this.decay / 1000);
 
     this.osc.frequency.value = freq;
-    this.osc.type = "triangle";
+    this.osc.type = this.wave_type;
     this.osc.connect(this.gain);
     this.osc.start(0);
 
