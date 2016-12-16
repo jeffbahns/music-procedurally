@@ -10,7 +10,7 @@ var Instrument = function(type, context, decay) {
     this.type = type;
     this.context = context;
     if (this.type != "kick" && this.type != "snare") {
-	this.decay = randomInt(250,1500);
+	this.decay = randomInt(250,1200);
 	this.wave_type = oscillator_waves[randomInt(0,4)];
     }
     this.mute = false;

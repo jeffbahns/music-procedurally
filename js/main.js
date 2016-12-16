@@ -170,7 +170,7 @@ function createDrums() {
 }
 
 function generateTempo() {
-    tempo = randomInt(40, 220);
+    tempo = randomInt(40, 180);
     redisplay = true;
 }
 function generateSteps() {
@@ -192,6 +192,11 @@ function regenerateStepsAll() {
     position = 0;
 }
 
+function regenerateInstrument(index) {
+    // regenerates an instrument only
+    role_stack[index].regenerateInstrument();
+}
+
 function muteRole(index) {
     var button = '#mute-' + index + '';
     console.log(button);
@@ -205,8 +210,7 @@ function muteRole(index) {
     instr_changed = true;
 }
 
-function displayParameters() {
-    $('#details').empty();
+function displayParameters() {    $('#details').empty();
     
     
     $('#details').append('<div><b>Root Note:</b> ' + base_scale.root_note + '</br>');
@@ -225,7 +229,8 @@ function displayParameters() {
 	$('#instruments').empty();
 	for (var i = 0; i < role_stack.length; i++) {
 	    $('#instruments').append(role_stack[i].display());
-	    $('#instruments').append('</br><button type="button" onClick="regenerateSequence(' + i + ')" class="btn btn-xs btn-default">Regenerate <span class="glyphicon glyphicon-retweet"></span></button>');
+	    $('#instruments').append('</br><button type="button" onClick="regenerateInstrument(' + i + ')" class="btn btn-xs btn-default">Instrument <span class="glyphicon glyphicon-retweet"></span></button>');
+	    $('#instruments').append('</br><button type="button" onClick="regenerateSequence(' + i + ')" class="btn btn-xs btn-default">Sequence <span class="glyphicon glyphicon-retweet"></span></button>');
 	    var mute_display;
 	    if (role_stack[i].mute == true)
 		mute_display = "Unmute";

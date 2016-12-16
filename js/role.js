@@ -1,6 +1,7 @@
 /*,instrument*/
 var Role = function(scale, sequence, audio_context, instrument) {
     this.type = instrument.type;
+    this.context = audio_context;
     this.scale = scale;
     this.sequence = sequence;
     this.instrument = instrument;
@@ -33,6 +34,10 @@ Role.prototype.regenerateSequence = function() {
     console.log("Old : " + this.sequence.seq);
     this.sequence.seq = this.sequence.generateRandomSequence();
     console.log("New : " + this.sequence.seq);
+}
+
+Role.prototype.regenerateInstrument = function() {
+    this.instrument = new Instrument(this.type, this.context);
 }
 
 Role.prototype.mutes = function() {
