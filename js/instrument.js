@@ -159,6 +159,7 @@ Instrument.prototype.playOscillator = function(freq) {
     this.osc.connect(this.gain);
     this.osc.start(0);
 
+    this.osc.stop(this.context.currentTime + this.decay/1000)
     //this.osc.disconnect(this.gain);
     //this.gain.disconnect(this.context);
     /* doesn't really work
