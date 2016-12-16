@@ -39,7 +39,7 @@ function generateSong() {
     console.log("Scale: " + base_scale.root_note + " " + base_scale.type);
     setupInstruments(1);
     displayParameters();
-    play();
+    //play();
 }
 
 
