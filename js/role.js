@@ -37,6 +37,7 @@ Role.prototype.regenerateSequence = function() {
 }
 
 Role.prototype.regenerateInstrument = function() {
+    console.log("regenerating " + this.instrument.type);
     this.instrument = new Instrument(this.type, this.context);
 }
 

@@ -10,8 +10,17 @@ var Instrument = function(type, context, decay) {
     this.type = type;
     this.context = context;
     if (this.type != "kick" && this.type != "snare") {
-	this.decay = randomInt(250,1200);
-	this.wave_type = oscillator_waves[randomInt(0,4)];
+	if (this.type == "bass-synth") {
+	    this.decay = randomInt(200,300)
+	    this.wave_type = oscillator_waves[randomInt(0,4)];
+	}
+	else {
+	    //this.decay = 200;
+	    this.decay = randomInt(250,1200);
+	    this.wave_type = oscillator_waves[randomInt(0,4)];
+	    //this.wave_type = oscillator_waves[0];
+	}
+
     }
     this.mute = false;
 }
@@ -52,9 +61,33 @@ Instrument.prototype.noiseBuffer = function() {
     }
     return buffer;
 };
+Instrument.prototype.reverbBuffer = function() {
+  var len = .5 * this.context.sampleRate,
+      decay = 1;
+  var buf = this.context.createBuffer(2, len, this.context.sampleRate);
+  for (var c = 0; c < 2; c++) {
+    var channelData = buf.getChannelData(c);
+    for (var i = 0; i < channelData.length; i++) {
+       channelData[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, decay);
+    }
+  }
+  return buf;
+}
+Instrument.prototype.oscillatorReverbBuffer = function() {
+  var len = 100 * this.context.sampleRate,
+      decay =.5;
+  var buf = this.context.createBuffer(2, len, this.context.sampleRate);
+  for (var c = 0; c < 2; c++) {
+    var channelData = buf.getChannelData(c);
+    for (var i = 0; i < channelData.length; i++) {
+       channelData[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, decay);
+    }
+  }
+  return buf;
+}
 Instrument.prototype.setupSnare = function() {
     this.noise = this.context.createBufferSource();
-    this.noise.buffer = this.noiseBuffer();
+    this.noise.buffer = this.reverbBuffer();
     var noiseFilter = this.context.createBiquadFilter();
     noiseFilter.type = 'highpass';
     noiseFilter.frequency.value = 100;
@@ -104,7 +137,18 @@ Instrument.prototype.triggerSnare = function(time) {
 
 Instrument.prototype.playOscillator = function(freq) {
     this.setupOscillator();
-
+    /*
+    this.noise = this.context.createBufferSource();
+    this.noise.buffer = this.oscillatorReverbBuffer();
+    var noiseFilter = this.context.createBiquadFilter();
+    this.noise.connect(noiseFilter);
+    this.noiseEnvelope = this.context.createGain();
+    noiseFilter.connect(this.noiseEnvelope);
+    this.noiseEnvelope.connect(this.context.destination);
+    this.noiseEnvelope.gain.setValueAtTime(1, this.context.currentTime);
+    this.noiseEnvelope.gain.exponentialRampToValueAtTime(0.01, this.context.currentTime + 0.2);
+    this.noise.start(this.context.currentTime)
+    */
     this.gain.connect(this.context.destination);
     this.gain.gain.setValueAtTime(0, this.context.currentTime);
     this.gain.gain.linearRampToValueAtTime(1, this.context.currentTime + this.attack / 1000);
@@ -115,6 +159,8 @@ Instrument.prototype.playOscillator = function(freq) {
     this.osc.connect(this.gain);
     this.osc.start(0);
 
+    //this.osc.disconnect(this.gain);
+    //this.gain.disconnect(this.context);
     /* doesn't really work
     setTimeout(function() {
         this.osc.stop(0);

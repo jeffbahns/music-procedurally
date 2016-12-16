@@ -124,7 +124,7 @@ function setupInstruments(num_instruments) {
 function setupInstruments2() {
     //drums
     createDrums();
-
+    
     //instrument 1 - bass type synth
     var sequencer = new Sequence(bar_length, base_scale.size());
     var instrument = new Instrument("synth", context, 300);
@@ -137,7 +137,7 @@ function setupInstruments2() {
     role_stack.push(role);
     
     //instrument 2 - lead type synth
-    var sequencer = new Sequence(bar_length, base_scale.size());
+    //var sequencer = new Sequence(bar_length, base_scale.size());
     var instrument = new Instrument("lead-synth", context, 300);
     var scale = new Scale(base_scale.root_note, base_scale.type);
     scale.dropOctave();
@@ -164,7 +164,7 @@ function createDrums() {
     role_stack.push(role);
     
     // snare
-    var sequencer = new Sequence(bar_length, 4);
+    var sequencer = new Sequence(bar_length, 2);//4
     var role = new Role(base_scale, sequencer, context, new Instrument("snare", context));
     role_stack.push(role);
 }
@@ -194,6 +194,7 @@ function regenerateStepsAll() {
 
 function regenerateInstrument(index) {
     // regenerates an instrument only
+    console.log
     role_stack[index].regenerateInstrument();
 }
 
