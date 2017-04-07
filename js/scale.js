@@ -59,6 +59,7 @@ Scale.prototype.generateScale = function() {
     return scale;
 };
 
+// drop every note by an octave, essentially is the exact same notes, just lower pitch
 Scale.prototype.dropOctave = function() {
     for(var note in Object.keys(this.notes)) {
 	this.notes[Object.keys(this.notes)[note]] *= .5;
@@ -66,6 +67,7 @@ Scale.prototype.dropOctave = function() {
     return this;
 }
 
+// same as drop, but raises octave
 Scale.prototype.raiseOctave = function() {
     for(var note in Object.keys(this.notes)) {
 	this.notes[Object.keys(this.notes)[note]] *= 2;
@@ -73,10 +75,12 @@ Scale.prototype.raiseOctave = function() {
     return this;
 }
 
+// length of scale
 Scale.prototype.size = function() {
     return Object.keys(this.notes).length;
 }
 
+// find the note
 Scale.prototype.findNoteByChar = function(input_note) {
     notes_in_scale = Object.keys(this.notes);
     if (input_note == '-')
@@ -88,10 +92,12 @@ Scale.prototype.findNoteByChar = function(input_note) {
 	}
     }
 }
+// find the note
 Scale.prototype.findNoteByIndex = function(index) {
     return this.notes[index];
 }
-// print, helpful for debugging
+
+// helpful for debugging
 Scale.prototype.print = function() {
     console.log("I am " + this.root_note + " " + this.type);
     console.log("This structure contains my notes");

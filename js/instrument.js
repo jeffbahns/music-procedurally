@@ -1,4 +1,10 @@
+/* Instrument class
+ *   a lot goes on in here, very hard to explain what's actually going on
+ *   i gotta spend some time figuring out what is actually going on and then I will document more lol
+ *
+ */
 
+// different types of oscillation waves. think of these as the building block of the sound that will be created
 var oscillator_waves = [
     "sine",
     "triangle",
@@ -6,6 +12,10 @@ var oscillator_waves = [
     "square",
 ]
 
+// Instrument constructor
+//   type: different types of instruments, my own structure
+//   context: audio context which it will be built on
+//   decay: length of decay?
 var Instrument = function(type, context, decay) {
     this.type = type;
     this.context = context;
@@ -20,10 +30,9 @@ var Instrument = function(type, context, decay) {
 	    this.wave_type = oscillator_waves[randomInt(0,4)];
 	    //this.wave_type = oscillator_waves[0];
 	}
-
     }
-    this.mute = false;
 }
+
 
 Instrument.prototype.play = function(number, freq) {
     if (this.type == "kick") {
@@ -49,6 +58,7 @@ Instrument.prototype.setupKick = function() {
     this.osc = this.context.createOscillator();
     this.gain = this.context.createGain();
     this.osc.connect(this.gain);
+
     this.gain.connect(this.context.destination)
 };
 Instrument.prototype.noiseBuffer = function() {
@@ -157,9 +167,9 @@ Instrument.prototype.playOscillator = function(freq) {
     this.osc.frequency.value = freq;
     this.osc.type = this.wave_type;
     this.osc.connect(this.gain);
-    this.osc.start(0);
+    this.osc.start(this.context.currentTime);
 
-    this.osc.stop(this.context.currentTime + this.decay/1000)
+    this.osc.stop(this.context.currentTime + 100);
     //this.osc.disconnect(this.gain);
     //this.gain.disconnect(this.context);
     /* doesn't really work

@@ -1,17 +1,14 @@
-
-// web audio api related stuff
 var context = new (window.AudioContext || window.webkitAudioContext)()
-context.suspend(); 
+context.suspend();
+// web audio api related stuff
 var on = false;
 var paused = false;
 var instr_changed = true;;
 // front end related
 redisplay = false;
-
 // music related
 var base_scale;
 var role_stack = [];
-
 // timing related
 var position = 0;
 var startTime = context.currentTime + 0.100;
@@ -25,32 +22,32 @@ $(document).ready(function () {
     generateSong();
 });
 
+
 function generateSong() {
     if (paused && role_stack.length != 0) {
 	return play();
     }
     if (on) {
-	return;
+	return ;
     }
+    setupParameters();
+    displayParameters();
+}
+
+function setupParameters() {
     bar_length = randomInt(4, 32);
     generateTempo();
     generateSteps();
     base_scale = new Scale(randomRootNote(), randomScaleType());
-    console.log("Scale: " + base_scale.root_note + " " + base_scale.type);
     setupInstruments(1);
-    displayParameters();
-    //play();
 }
-
 
 function play() {
     // song hasn't been generated
     if (role_stack.length == 0) {
 	return generateSong()
     }
-
     context.resume();
-    console.log("resumed");
     on = true
     setInterval(scheduler, 100);
 }
@@ -66,27 +63,28 @@ function nextNote() {
 }
 
 function scheduler() {
+    // if paused/off i think
     if (!on)
-	return
+	return ;
+    // 
     while(nextNoteTime < context.currentTime+ scheduleAheadTime){ // + scheduleAheadTime){
-	playCursor();
+	for (var role in role_stack) {
+	    role_stack[role].play(position);
+	}
+	// ensemble.play
 	nextNote();
 	displayParameters();
     }
 }
-    
-function playCursor() {
-    for (var role in role_stack) {
-	role_stack[role].play(position);
-    }
-}
 
+// pause scheduler
 function pause() {
     on = false;
     paused = true;
     context.suspend();
 }
 
+// reset all variables, instruments, generate new song
 function reset() {
     role_stack = [];
     on = false;
@@ -99,29 +97,17 @@ function reset() {
     generateSong();
 }
 
+// could probably do this in better way, but this does a fair job of setting up a quick ensemble
 function setupInstruments(num_instruments) {
-    return setupInstruments2()
-    createDrums();
-    for (var i = 0; i < num_instruments; i++) {
-	var sequencer = new Sequence(bar_length, base_scale.size());
-	var scale;
-	if (i % 2 == 0) {
-	    scale = new Scale(base_scale.root_note, base_scale.type);
-	    scale.dropOctave();
-	    scale.dropOctave();
-	    scale.dropOctave();
-	    scale.dropOctave();
-	}
-	else {
-	    scale = base_scale;
-	}
-	var role = new Role(scale, sequencer, context, new Instrument("bass-synth", context));
-	role_stack.push(role);
-    }
+    var sequencer = new Sequence(bar_length, base_scale.size());    
+    var instrument = new Instrument("leadsynth", context, 300);
+    var scale = new Scale(base_scale.root_note, base_scale.type);
+    scale.dropOctave();
+    var role = new Role(scale, sequencer, context, instrument);
+    role_stack.push(role);
 
-}
-
-function setupInstruments2() {
+    return ;
+    
     //drums
     createDrums();
     
@@ -154,7 +140,6 @@ function setupInstruments2() {
     scale.dropOctave();
     var role = new Role(scale, sequencer, context, new Instrument("mid-synth", context));
     role_stack.push(role);
-    
 }
 
 function createDrums() {
@@ -169,19 +154,24 @@ function createDrums() {
     role_stack.push(role);
 }
 
+// generates a tempo/pace for the music
 function generateTempo() {
     tempo = randomInt(40, 180);
     redisplay = true;
 }
+
+// 
 function generateSteps() {
     bar_length = randomInt(2, 24);
     redisplay = true;
 }
 
+// regenerates the sequence/music for any instrument
 function regenerateSequence(index) {
     role_stack[index].regenerateSequence();
 }
 
+// regenerate the sequence/music for all instruments on the scheduler
 function regenerateStepsAll() {
     // regen bars
     generateSteps();
@@ -192,12 +182,14 @@ function regenerateStepsAll() {
     position = 0;
 }
 
+// create new instrument sound at index
 function regenerateInstrument(index) {
     // regenerates an instrument only
     console.log
     role_stack[index].regenerateInstrument();
 }
 
+// mute instrument
 function muteRole(index) {
     var button = '#mute-' + index + '';
     console.log(button);
@@ -238,17 +230,6 @@ function displayParameters() {    $('#details').empty();
 	    else
 		mute_display = "Mute";
 	    $('#instruments').append('<button type="button" value="' + role_stack[i].mute + '" id="mute-' + i + '"onClick="muteRole(' + i + ')" class="btn btn-xs btn-default">' + mute_display + '</button></br></br>');
-
-	    /*
-	    if(role_stack[i].mute)
-		$('#mute' + role_stack[i].type  + '').prop('checked', false);
-	    else
-		$('#mute' + role_stack[i].type + '').prop('checked', true);
-
-	    $('#' + role_stack[i].type + '').click(function(){
-		muteRole(i);
-	    })
-	    */
 	}
 	
 

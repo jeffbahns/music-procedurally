@@ -1,7 +1,7 @@
 /*,instrument*/
-var Role = function(scale, sequence, audio_context, instrument) {
+var Role = function(scale, sequence, context, instrument) {
     this.type = instrument.type;
-    this.context = audio_context;
+    this.context = context;
     this.scale = scale;
     this.sequence = sequence;
     this.instrument = instrument;
@@ -16,11 +16,9 @@ Role.prototype.play = function(position) {
     // if there is a rest note, undefined because note search blows up
     if (note == undefined || this.mute) {
 	// dont do shit
-	//console.log("(" + note + " : " + freq + ")");
 	return ;
     }
     this.instrument.play(number, freq);
-    //createOscillator1(freq, this.audio_context);
 }
 
 Role.prototype.display = function() {
