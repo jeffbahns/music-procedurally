@@ -12,11 +12,6 @@ var oscillator_waves = [
     "square",
 ]
 
-var presets = [
-    // decay, wave type
-    [400, oscillator_waves[0]]
-]
-
 // Instrument constructor
 //   type: different types of instruments, my own structure
 //   context: audio context which it will be built on
@@ -38,10 +33,6 @@ var Instrument = function(type, context, decay) {
     }
 }
 
-Instrument.prototype.preset = function(preset_num) {
-    this.decay = presets[preset_num][0];
-    this.wave_type = presets[preset_num][1];
-}
 
 Instrument.prototype.play = function(number, freq) {
     if (this.type == "kick") {

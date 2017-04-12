@@ -21,8 +21,8 @@ Role.prototype.play = function(position) {
     this.instrument.play(number, freq);
 }
 
-Role.prototype.playNote = function(note) {
-    this.instrument.player(-1, note)
+Role.prototype.play = function(freq, amp) {
+    
 }
 
 Role.prototype.display = function() {

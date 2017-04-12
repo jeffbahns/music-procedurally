@@ -1,18 +1,14 @@
-
-// web audio api/control related stuff
 var context = new (window.AudioContext || window.webkitAudioContext)()
 context.suspend();
+// web audio api related stuff
 var on = false;
 var paused = false;
-var instr_changed = true;
-
+var instr_changed = true;;
 // front end related
 redisplay = false;
-
 // music related
 var base_scale;
 var role_stack = [];
-
 // timing related
 var position = 0;
 var startTime = context.currentTime + 0.100;
@@ -21,9 +17,6 @@ var quarterNoteTime = 60 / tempo;
 var bar_length = 8;
 var nextNoteTime = 0.0;
 var scheduleAheadTime = 0.1;
-
-var test_instr = new Instrument("leadsynth", context, 300);
-test_instr.preset(0);
 
 $(document).ready(function () {
     generateSong();
@@ -45,7 +38,7 @@ function setupParameters() {
     bar_length = randomInt(4, 32);
     generateTempo();
     generateSteps();
-    base_scale = randomScale();
+    base_scale = new Scale(randomRootNote(), randomScaleType());
     setupInstruments(1);
 }
 
@@ -75,12 +68,9 @@ function scheduler() {
 	return ;
     // 
     while(nextNoteTime < context.currentTime+ scheduleAheadTime){ // + scheduleAheadTime){
-	/*
 	for (var role in role_stack) {
 	    role_stack[role].play(position);
 	}
-	*/
-	test_instr.play(0, 440);
 	// ensemble.play
 	nextNote();
 	displayParameters();

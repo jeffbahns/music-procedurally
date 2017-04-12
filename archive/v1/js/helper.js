@@ -42,6 +42,3 @@ function randomScaleType() {
     return Object.keys(scales)[randomScaleIndex];
 }
 
-function randomScale() {
-    return new Scale(randomRootNote(), randomScaleType())
-}
