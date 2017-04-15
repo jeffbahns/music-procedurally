@@ -15,8 +15,8 @@ Role.prototype.play = function(position) {
 
     // if there is a rest note, undefined because note search blows up
     if (note == undefined || this.mute) {
-	// dont do shit
-	return ;
+        // dont do shit
+        return;
     }
     this.instrument.play(number, freq);
 }
