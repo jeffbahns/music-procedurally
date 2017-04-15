@@ -26,10 +26,18 @@ var test_instr = new Instrument("leadsynth", context, 300);
 test_instr.preset(0);
 
 $(document).ready(function () {
-    generateSong();
+    new_shit();
 });
 
 
+function new_shit() {
+    console.log("Hello world");
+    var m = new Matrix(5,5);
+    for (var i = 0; i < 5; i++) {
+	//console.log("iter " + i );
+	m.progress();	
+    }
+}
 function generateSong() {
     if (paused && role_stack.length != 0) {
 	return play();
