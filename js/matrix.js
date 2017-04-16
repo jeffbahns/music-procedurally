@@ -1,7 +1,7 @@
 // data model for v2
 //based on some combination of conway's game of life and probabilistic bizness
 
-var Matrix = function(rows, cols) {
+var Matrix = function(rows=8, cols=8) {
     this.rows = rows;
     this.cols = cols;
     this.matrix;
@@ -21,12 +21,18 @@ Matrix.prototype.initializeMatrix = function() {
 }
 
 Matrix.prototype.progress = function() {
-    this.conwaysGOL();
+    alive = this.conwaysGOL();
     this.print();
+    for (i in alive) {
+	//console.log("ON " ,alive[i][0],", ", alive[i][1]);
+    }
+    return alive;
 }
 
 Matrix.prototype.conwaysGOL = function() {
+    console.log("iterating conways GOL");
     var neighbors = 1;
+    alive_cells = [];
     var newMatrix = new Array();
     for (i = 0; i < this.rows; i++) {
 	newMatrix[i] = new Array();
@@ -59,9 +65,14 @@ Matrix.prototype.conwaysGOL = function() {
 		alive = neighbors == 3 ? 1 : 0;
 	    }
 	    newMatrix[i][j] = alive;
+
+	    if (alive) {
+		alive_cells.push(new Array(i, j));
+	    }
 	}
     }
     this.matrix = newMatrix;
+    return alive_cells;
 }
 
 Matrix.prototype.randomStartingState = function() {

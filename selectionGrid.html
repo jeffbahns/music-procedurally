@@ -2,7 +2,6 @@
 <meta charset="utf-8">
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="js/MusicGrid.js"> </script>
@@ -11,29 +10,31 @@
     <script src="js/sequence.js"></script>
     <script src="js/instrument.js"></script>
     <script src="js/role.js"></script>
+    <script src="js/matrix.js"></script>
+    <script src="js/model.js"></script>
     <script src="js/main.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
   </head>
 <body>
-
-
-
-<div id="grid"></div>
-
+  <button class="btn btn-success" onclick="new_shit()">Start</button>
+  <div id="grid"></div>
+</body>
 <script>
 var numRows = 10;
 var numCols = 10;
-
+var i = 0;
 // MusicGrid() creates the object
 // rows() and columns() are optional functions if you don't want the default 8x8 grid.
 // drawGrid() will draw the black grid on the screen
 // update() will repace the current red boxes with the new set given
-var field = MusicGrid().rows(numRows).columns(numCols).drawGrid().update(getRandomSet());
+var model = new Matrix(numRows, numCols);
+//var field = new MusicGrid().rows(numRows).columns(numCols).drawGrid().update(model.progress());
+var field = new MusicGrid().rows(numRows).columns(numCols).drawGrid().update([[0,0],[9,0],[0,9],[9,9]]);
+field.update([[0,0],[9,0],[0,9],[9,9]]);field.update([[0,0],[9,0],[0,9],[9,9]]);field.update([[0,0],[9,0],[0,9],[9,9]]);
 
 // Everything below is used to make the random boxes show up for demo purpoces.
 var tick = setInterval(next, 1000);
-var tickCount = 10;
+var tickCount = 100;
 
 
 function getRandomInt(min, max) {
@@ -51,9 +52,15 @@ function getRandomSet(){
 }
 
 // Update to the next randomly generated field of squares
-function next(){
-  field.update(getRandomSet());
-  tickCount--;
+		     function next(){
+
+		     if (i > 1) {
+    return ;
+    }
+    i++;
+    field.update([[0,0],[9,0],[0,9],[9,9]]);
+		     tickCount--;
+
   if(tickCount == 0){
     clearInterval(tick);
   }
