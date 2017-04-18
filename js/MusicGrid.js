@@ -1,9 +1,9 @@
-var MusicGrid = function(rows=8, cols=8) {
+var MusicGrid = function(r=8, c=8) {
     /** grid size **/
     var squareWidth = 40,
         squareHeight = 40,
-        gridCols = rows,
-        gridRows = cols,
+        gridCols = c,
+        gridRows = r,
         squarePadding = 0,
         svgSize = svgSizeUpdate(); // assuming the grid is a square.
 
@@ -59,8 +59,10 @@ var MusicGrid = function(rows=8, cols=8) {
      **/
     MusicGrid.update = function(x) {
         if (!arguments.length) return matrixData;
+        gridSVG.selectAll("rect.mat_square").remove();
         matrixData = [];
         matrixUpdate();
+        console.log("x=",x);
         for (var i in x) {
 	    //console.log(">> " ,x[i][0],", ", x[i][1]);
             matrixData.push(node(x[i][0], x[i][1]));
@@ -116,6 +118,7 @@ var MusicGrid = function(rows=8, cols=8) {
     }
 
     function matrixUpdate() {
+        console.log("matrix data in update", matrixData);
         var rect = gridSVG.selectAll(".mat_square")
             .data(matrixData);
 

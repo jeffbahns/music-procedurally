@@ -1,69 +1,74 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-  <head>
+
+<head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
-    <script src="js/MusicGrid.js"> </script>
-    <script src="js/helper.js"></script>
+    <script src="js/MusicGrid.js">
+    </script>
+    <!-- <script src="js/helper.js"></script>
     <script src="js/scale.js"></script>
     <script src="js/sequence.js"></script>
     <script src="js/instrument.js"></script>
     <script src="js/role.js"></script>
     <script src="js/matrix.js"></script>
     <script src="js/model.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/main.js"></script> -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  </head>
+</head>
+
 <body>
-  <button class="btn btn-success" onclick="new_shit()">Start</button>
-  <div id="grid"></div>
+    <button class="btn btn-success" onclick="new_shit()">Start</button>
+    <div id="grid"></div>
 </body>
 <script>
-var numRows = 10;
-var numCols = 10;
-var i = 0;
-// MusicGrid() creates the object
-// rows() and columns() are optional functions if you don't want the default 8x8 grid.
-// drawGrid() will draw the black grid on the screen
-// update() will repace the current red boxes with the new set given
-var model = new Matrix(numRows, numCols);
-//var field = new MusicGrid().rows(numRows).columns(numCols).drawGrid().update(model.progress());
-var field = new MusicGrid().rows(numRows).columns(numCols).drawGrid().update([[0,0],[9,0],[0,9],[9,9]]);
-field.update([[0,0],[9,0],[0,9],[9,9]]);field.update([[0,0],[9,0],[0,9],[9,9]]);field.update([[0,0],[9,0],[0,9],[9,9]]);
+    var numRows = 10;
+    var numCols = 10;
+    var updater = [[0, 0],
+    [0, 1],
+    [0, 2],
+    [0, 3]];
+    // var i = 0;
+    // MusicGrid() creates the object
+    // rows() and columns() are optional functions if you don't want the default 8x8 grid.
+    // drawGrid() will draw the black grid on the screen
+    // update() will repace the current red boxes with the new set given
+    // var model = new Matrix(numRows, numCols);
+    //var field = new MusicGrid().rows(numRows).columns(numCols).drawGrid().update(model.progress());
+    var field = MusicGrid().rows(numRows).columns(numCols).drawGrid();//.update(updater);
 
-// Everything below is used to make the random boxes show up for demo purpoces.
-var tick = setInterval(next, 1000);
-var tickCount = 100;
+
+    // Everything below is used to make the random boxes show up for demo purpoces.
+    var tick = setInterval(next, 1000);
+    var tickCount = 10;
 
 
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-// produce a randomly selected array of points on the grid
-function getRandomSet(){
-  var set = [];
-  var setLength = getRandomInt(3,40);
-  for (var i=0; i <= setLength; i++){
-    set.push([getRandomInt(0,numRows-1),getRandomInt(0,numCols-1)]);
-  }
-  return set;
-}
-
-// Update to the next randomly generated field of squares
-		     function next(){
-
-		     if (i > 1) {
-    return ;
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
-    i++;
-    field.update([[0,0],[9,0],[0,9],[9,9]]);
-		     tickCount--;
 
-  if(tickCount == 0){
-    clearInterval(tick);
-  }
-}
+    // produce a randomly selected array of points on the grid
+    function getRandomSet() {
+        var set = [];
+        var setLength = getRandomInt(3, 40);
+        for (var i = 0; i <= setLength; i++) {
+            set.push([getRandomInt(0, numRows - 1), getRandomInt(0, numCols - 1)]);
+        }
+        return set;
+    }
 
+    // Update to the next randomly generated field of squares
+    function next() {
+        for (var i = 0; i < updater.length; i++ ){
+          updater[i][1] = (updater[i][1]+1)%numCols;
+          console.log(updater[i][1]);
+        }
+        console.log(updater);
+        field.update(updater);
+        tickCount--;
+        if (tickCount == 0) {
+            clearInterval(tick);
+        }
+    }
 </script>
