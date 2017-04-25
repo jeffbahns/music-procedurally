@@ -23,7 +23,6 @@ var MusicGrid = function(r=8, c=8) {
             .attr("height", svgSize + "px");
 
         var data = gridData();
-        console.log(data);
         var row = gridSVG.selectAll(".row")
             .data(data)
             .enter().append("g")
@@ -59,15 +58,12 @@ var MusicGrid = function(r=8, c=8) {
      **/
     MusicGrid.update = function(x) {
         if (!arguments.length) return matrixData;
-        gridSVG.selectAll("rect.mat_square").remove();
         matrixData = [];
-        matrixUpdate();
-        console.log("x=",x);
+        if(matrixUpdate()){}
         for (var i in x) {
-	    //console.log(">> " ,x[i][0],", ", x[i][1]);
             matrixData.push(node(x[i][0], x[i][1]));
         }
-        matrixUpdate();
+        if(matrixUpdate()){}
         return MusicGrid;
     };
 
@@ -118,7 +114,6 @@ var MusicGrid = function(r=8, c=8) {
     }
 
     function matrixUpdate() {
-        console.log("matrix data in update", matrixData);
         var rect = gridSVG.selectAll(".mat_square")
             .data(matrixData);
 
@@ -136,17 +131,20 @@ var MusicGrid = function(r=8, c=8) {
             .attr("height", function(d) {
                 return d.height;
             })
-            .style("opacity", 0)
+            .style("opacity", 1)
             .style("fill", "red");
 
-        rect.transition()
-            .style("opacity", function(d) {
-                return d.opacity;
-            });
+        // rect.transition().duration(350)
+        //     .style("opacity", function(d) {
+        //         return d.opacity;
+        //     });
 
-        rect.exit().transition()
+        rect.exit()
             .style("opacity", 1e-6)
+            // .transition()
             .remove();
+
+        return true;
     }
 
     function gridData() {
