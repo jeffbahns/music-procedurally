@@ -22,7 +22,7 @@ Role.prototype.play = function(position) {
 }
 
 Role.prototype.playNote = function(note) {
-    this.instrument.player(-1, note)
+    this.instrument.play(-1, note)
 }
 
 Role.prototype.display = function() {

@@ -45,3 +45,13 @@ function randomScaleType() {
 function randomScale() {
     return new Scale(randomRootNote(), randomScaleType())
 }
+
+var concatArraysUniqueWithSort = function (thisArray, otherArray) {
+    var newArray = thisArray.concat(otherArray).sort(function (a, b) {
+        return a > b ? 1 : a < b ? -1 : 0;
+    });
+
+    return newArray.filter(function (item, index) {
+        return newArray.indexOf(item) === index;
+    });
+};

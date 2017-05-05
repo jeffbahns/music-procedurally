@@ -17,7 +17,7 @@ var role_stack = [];
 // timing related
 var position = 0;
 var startTime = context.currentTime + 0.100;
-var tempo = 50; // BPM
+var tempo = 40; // BPM
 var quarterNoteTime = 60 / tempo;
 var bar_length = 8;
 var nextNoteTime = 0.0;
@@ -34,7 +34,7 @@ $(document).ready(function () {
 
 function new_shit() {
     console.log("Hello world");
-    m = new Model(context, 15, 15);
+    m = new Model(context, 10,10);
 }
 function generateSong() {
     if (paused && role_stack.length != 0) {
