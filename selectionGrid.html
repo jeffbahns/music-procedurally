@@ -38,10 +38,18 @@
     //var field = new MusicGrid().rows(numRows).columns(numCols).drawGrid().update(model.progress());
     var field = MusicGrid().rows(numRows).columns(numCols).drawGrid();//.update(updater);
 
+    // console.log();
+    d3.selectAll('.square').on("click", addSquare)
 
     // Everything below is used to make the random boxes show up for demo purpoces.
     var tick = setInterval(next, 100);
     var tickCount = 10;
+
+    function addSquare(d){
+      console.log(d);
+      updater.push([d.row, d.col]);
+      field.update(updater);
+    }
 
 
     function getRandomInt(min, max) {
@@ -62,9 +70,9 @@
     function next() {
         for (var i = 0; i < updater.length; i++ ){
           updater[i][1] = (updater[i][1]+1)%numCols;
-          console.log(updater[i][1]);
+          // console.log(updater[i][1]);
         }
-        console.log(updater);
+        // console.log(updater);
         field.update(updater);
         tickCount--;
         if (tickCount == 0) {

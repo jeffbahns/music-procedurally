@@ -164,7 +164,9 @@ var MusicGrid = function(r=8, c=8) {
                     x: xpos,
                     y: ypos,
                     width: width,
-                    height: height
+                    height: height,
+                    row: row,
+                    col: column
                 });
                 // increment the x position. I.e. move it over by 50 (width variable)
                 xpos += width + squarePadding;
