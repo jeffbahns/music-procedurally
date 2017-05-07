@@ -21,11 +21,10 @@ Matrix.prototype.initializeMatrix = function() {
 }
 
 Matrix.prototype.progress = function() {
+    // this is where you determine the model for progression,
+    // currently it is conways game of life
     alive = this.conwaysGOL();
-    this.print();
-    for (i in alive) {
-	//console.log("ON " ,alive[i][0],", ", alive[i][1]);
-    }
+    //this.print();
     return alive;
 }
 
@@ -82,7 +81,44 @@ Matrix.prototype.randomStartingState = function() {
 	    this.matrix[i][j] = randomInt(0,3) == 0 ? 1 : 0;  // 1 in 4 chaance i think
 	}
     }
+}
 
+Matrix.prototype.rowEmpty = function(rowNum) {
+    for (i = 0; i < this.cols; i++) {
+	if (this.matrix[rowNum][i] == 1) {
+	    return false;
+	}
+    }
+    return true
+}
+
+Matrix.prototype.colEmpty = function(colNum) {
+    for (i = 0; i < this.rows; i++) {
+	if (this.matrix[i][colNum] == 1) {
+	    return false;
+	}
+    }
+    return true
+}
+
+Matrix.prototype.rowEdges = function() {
+    var edges = []
+    for (i = 0; i < this.rows; i++) {
+	if (this.matrix[i][0] || this.matrix[i][this.cols-1]) {
+	    edges.push(i);
+	}
+    }
+    return edges;
+}
+
+Matrix.prototype.colEdges = function() {
+    var edges = []
+    for (i = 0; i < this.cols; i++) {
+	if (this.matrix[0][i] || this.matrix[this.rows-1][i]) {
+	    edges.push(i);
+	}
+    }
+    return edges;
 }
 
 Matrix.prototype.print = function() {
