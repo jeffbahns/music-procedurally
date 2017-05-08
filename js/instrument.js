@@ -14,7 +14,7 @@ var oscillator_waves = [
 
 var presets = [
     // decay, wave type
-    [400, oscillator_waves[0]]
+    [600, oscillator_waves[0]]
 ]
 
 // Instrument constructor
@@ -36,6 +36,7 @@ var Instrument = function(type, context, decay) {
 	    //this.wave_type = oscillator_waves[0];
 	}
     }
+    this.preset(0);
 }
 
 Instrument.prototype.preset = function(preset_num) {

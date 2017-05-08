@@ -26,36 +26,34 @@ var scales = {
 
 // scale class, takes a root note and type of scale
 // generates and stores all the notes associated with the class
-var Scale = function(root_note, type) {
+var Scale = function(root_note, type, size=5) {
     this.root_note = root_note;
     this.type = type;
+    this.size = size;
     this.notes = this.generateScale();
+
 };
 
 // from the root note of the scale and what type of scale it is,
 // this function creates the member dictionary that contains the notes
 // that only pertain to this exact scale
 Scale.prototype.generateScale = function() {
+    console.log("building scale...");
     var scale = {}
     var scale_steps = scales[this.type];
-
-    // find root index
-    var root_index;
-    for (var i = 0; i < Object.keys(notes).length; i++) {
-        if (this.root_note == Object.keys(notes)[i]) {
-            root_index = i;
-        }
-    }
+    var root_index = Object.keys(notes).indexOf(this.root_note);
 
     // use root index and steps to build scale
-    for (var i = 0; i < scale_steps.length; i++) {
-        var note_index = root_index + scale_steps[i];
-        if (note_index >= Object.keys(notes).length) {
-            note_index -= Object.keys(notes).length;
-        }
-        // scale[note_letter] = note_freq
-        scale[Object.keys(notes)[note_index]] = notes[Object.keys(notes)[note_index]];
+    var iter = Math.ceil(this.size / scale_steps.length);
+    
+    for (var i = -1; i < iter-1; i++) {
+	//console.log(Object.keys(scale).length, this.size);
+	for (var j = 0; j < scale_steps.length && Object.keys(scale).length < this.size; j++) {
+	    var note_index = (root_index + scale_steps[j]) %  Object.keys(notes).length;
+	    scale[Object.keys(notes)[note_index]+(i.toString())] = notes[Object.keys(notes)[note_index]]*Math.pow(2,i);
+	}
     }
+    console.log(scale);
     return scale;
 };
 
@@ -76,8 +74,9 @@ Scale.prototype.raiseOctave = function() {
 }
 
 // length of scale
-Scale.prototype.size = function() {
-    return Object.keys(this.notes).length;
+Scale.prototype.sizeFunc = function() {
+    return this.size;
+    //return Object.keys(this.notes).length;
 }
 
 // find the note

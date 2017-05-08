@@ -17,7 +17,7 @@ var role_stack = [];
 // timing related
 var position = 0;
 var startTime = context.currentTime + 0.100;
-var tempo = 40; // BPM
+var tempo = 100; // BPM
 var quarterNoteTime = 60 / tempo;
 var bar_length = 8;
 var nextNoteTime = 0.0;
@@ -34,8 +34,10 @@ $(document).ready(function () {
 
 function new_shit() {
     console.log("Hello world");
-    m = new Model(context, 10,10);
+    //s = new Scale('A', 'major-pentatonic', 12);
+    m = new Model(context, 20,20);
 }
+
 function generateSong() {
     if (paused && role_stack.length != 0) {
         return play();
@@ -76,21 +78,11 @@ function nextNote() {
 }
 
 function scheduler() {
-    // if paused/off i think
     if (!on)
 	return ;
-    // 
     while(nextNoteTime < context.currentTime+ scheduleAheadTime){ // + scheduleAheadTime){
-	m.progress();
-	/*
-	for (var role in role_stack) {
-	    role_stack[role].play(position);
-	}
-	*/
-	//test_instr.play(0, 440);
-	// ensemble.play
+	m.play();
 	nextNote();
-	//displayParameters();
     }
 }
 
