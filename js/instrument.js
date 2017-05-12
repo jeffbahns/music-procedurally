@@ -33,9 +33,11 @@ var Instrument = function(type, context, decay) {
 	    //this.decay = 200;
 	    this.decay = randomInt(250,1200);
 	    this.wave_type = oscillator_waves[randomInt(0,4)];
+	    this.preset(0);
 	    //this.wave_type = oscillator_waves[0];
 	}
     }
+
 }
 
 Instrument.prototype.preset = function(preset_num) {

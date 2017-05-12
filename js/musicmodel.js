@@ -5,7 +5,9 @@ var MusicModel = function(context, rows=8, cols=8) {
     this.instr = [];
     this.initializeInstruments();
     this.matrix = new Matrix(rows, cols);
-    this.base_scale = new Scale('A', 'major');
+    //this.base_scale = new Scale('F', 'major-naturalminor', this.matrix.rows);
+    this.base_scale = randomScale(this.matrix.rows);
+    console.log(this.base_scale.notes)
 }
 
 MusicModel.prototype.play = function(matrix) {
@@ -13,11 +15,32 @@ MusicModel.prototype.play = function(matrix) {
     this.playInstruments3();
 }
 
+MusicModel.prototype.play = function(matrix, column) {
+    this.matrix = matrix;
+    this.playInstrumentsByColumn(column);
+}
+
 MusicModel.prototype.initializeInstruments = function() {
-    for (var i = 0; i < this.cols; i++) {
+    this.instr.push(new Instrument("kick", this.context, 300));
+    for (var i = 1; i < this.rows; i++) {
 	var ins = new Instrument("leadsynth", this.context, 300);
 	this.instr.push(ins);
     }
+}
+
+MusicModel.prototype.playInstrumentsByColumn = function(column) {
+    var notes = Object.values(this.base_scale.notes)
+    var num_notes = Object.values(this.base_scale.notes).length
+    var to_play = this.matrix.rowsInColumn(column);
+    for (var i = 0; i < to_play.length; i++) {
+	console.log("THIS: ", Object.keys(this.base_scale.notes)[to_play[i]%num_notes])
+	if (to_play[i] == 0) {
+	    //this.instr[to_play[i]].play(1,1);
+	} else {
+	    this.instr[to_play[i]].play(-1, notes[to_play[i] % num_notes]);	    
+	}
+    }
+
 }
 
 MusicModel.prototype.playInstruments = function() {

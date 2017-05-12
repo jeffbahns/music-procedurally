@@ -6,6 +6,8 @@ var Matrix = function(rows=8, cols=8) {
     this.cols = cols;
     this.matrix;
     this.initializeMatrix();
+
+    this.currentCellR = 0;
 }
 
 // initialize a fresh matrix
@@ -23,11 +25,29 @@ Matrix.prototype.initializeMatrix = function() {
 Matrix.prototype.progress = function() {
     // this is where you determine the model for progression,
     // currently it is conways game of life
+
     alive = this.conwaysGOL();
+    //alive = this.stuff();
+
     //this.print();
     return alive;
 }
 
+Matrix.prototype.stuff = function() {
+    var newMatrix = new Array();
+    for (i = 0; i < this.rows; i++) {
+	newMatrix[i] = new Array();
+	for (j = 0; j < this.cols; j++) {
+	    newMatrix[i][j] = 0;
+	}
+    }
+    for (var i = 0; i < this.cols; i++) {
+	newMatrix[this.currentCellR][i] = 1;
+    }
+    this.currentCellR += 1 % this.rows;
+    this.matrix = newMatrix;
+    return newMatrix;
+}
 Matrix.prototype.conwaysGOL = function() {
     console.log("iterating conways GOL");
     var neighbors = 1;
@@ -78,11 +98,34 @@ Matrix.prototype.randomStartingState = function() {
     for (i = 0; i < this.rows; i++) {
 	var row = "" + i + ": ";
 	for (j = 0; j < this.cols; j++) {
-	    this.matrix[i][j] = randomInt(0,3) == 0 ? 1 : 0;  // 1 in 4 chaance i think
+	    this.matrix[i][j] = randomInt(0,5) == 0 ? 1 : 0;  // 1 in 4 chaance i think
 	}
     }
 }
 
+// returns list of cells occupied for any given column
+Matrix.prototype.rowsInColumn = function(colNum) {
+    var cells = []
+    for (i = 0; i < this.rows; i++) {
+	if (this.matrix[i][colNum]) {
+	    cells.push(i);
+	}
+    }
+    return cells;
+}
+
+// returns list of cells occupied for any given row
+Matrix.prototype.colsInRow = function(rowNum) {
+    var cells = []
+    for (i = 0; i < this.cols; i++) {
+	if (this.matrix[rowNum][i]) {
+	    cells.push(i);
+	}
+    }
+    return cells;
+}
+
+// returns true if row empty
 Matrix.prototype.rowEmpty = function(rowNum) {
     for (i = 0; i < this.cols; i++) {
 	if (this.matrix[rowNum][i] == 1) {
@@ -91,7 +134,7 @@ Matrix.prototype.rowEmpty = function(rowNum) {
     }
     return true
 }
-
+// returns true if column empty
 Matrix.prototype.colEmpty = function(colNum) {
     for (i = 0; i < this.rows; i++) {
 	if (this.matrix[i][colNum] == 1) {
@@ -101,6 +144,7 @@ Matrix.prototype.colEmpty = function(colNum) {
     return true
 }
 
+// returns list of row edges that are occupied, on either far left or far right
 Matrix.prototype.rowEdges = function() {
     var edges = []
     for (i = 0; i < this.rows; i++) {
@@ -111,6 +155,7 @@ Matrix.prototype.rowEdges = function() {
     return edges;
 }
 
+// returns list of column edges that are occupied, on either top or bottom 
 Matrix.prototype.colEdges = function() {
     var edges = []
     for (i = 0; i < this.cols; i++) {
@@ -121,6 +166,7 @@ Matrix.prototype.colEdges = function() {
     return edges;
 }
 
+// print helper func
 Matrix.prototype.print = function() {
     var total = ""
     for (i = 0; i < this.rows; i++) {
