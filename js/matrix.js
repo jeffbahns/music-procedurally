@@ -6,6 +6,8 @@ var Matrix = function(rows=8, cols=8) {
     this.cols = cols;
     this.matrix;
     this.initializeMatrix();
+
+    this.currentCellR = 0;
 }
 
 // initialize a fresh matrix
@@ -23,11 +25,29 @@ Matrix.prototype.initializeMatrix = function() {
 Matrix.prototype.progress = function() {
     // this is where you determine the model for progression,
     // currently it is conways game of life
+
     alive = this.conwaysGOL();
+    //alive = this.stuff();
+
     //this.print();
     return alive;
 }
 
+Matrix.prototype.stuff = function() {
+    var newMatrix = new Array();
+    for (i = 0; i < this.rows; i++) {
+	newMatrix[i] = new Array();
+	for (j = 0; j < this.cols; j++) {
+	    newMatrix[i][j] = 0;
+	}
+    }
+    for (var i = 0; i < this.cols; i++) {
+	newMatrix[this.currentCellR][i] = 1;
+    }
+    this.currentCellR += 1 % this.rows;
+    this.matrix = newMatrix;
+    return newMatrix;
+}
 Matrix.prototype.conwaysGOL = function() {
     console.log("iterating conways GOL");
     var neighbors = 1;

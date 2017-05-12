@@ -35,7 +35,9 @@ $(document).ready(function () {
 function new_shit() {
     console.log("Hello world");
     //s = new Scale('A', 'major-pentatonic', 12);
-    m = new Model(context, 20,20);
+    m = new Model(context, 10,10);
+    console.log(m.scale());
+    display();
 }
 
 function generateSong() {
@@ -70,7 +72,7 @@ function play() {
 function nextNote() {
     // Advance current note and time by a 16th note...
     var secondsPerBeat = 120 / tempo; // picks up the CURRENT tempo value!
-    nextNoteTime += 0.25 * secondsPerBeat; // Add 1/4 of quarter-note beat length to time
+    nextNoteTime += .25 * secondsPerBeat; // Add 1/4 of quarter-note beat length to time
     position++;
     if (position == bar_length) {
         position = 0;
@@ -80,9 +82,10 @@ function nextNote() {
 function scheduler() {
     if (!on)
 	return ;
-    while(nextNoteTime < context.currentTime+ scheduleAheadTime){ // + scheduleAheadTime){
+    while (nextNoteTime < context.currentTime + scheduleAheadTime){ // + scheduleAheadTime){
 	m.play();
 	nextNote();
+	display();
     }
 }
 
@@ -209,6 +212,12 @@ function muteRole(index) {
     }
     role_stack[index].mutes();
     instr_changed = true;
+}
+
+function display() {
+    $('#details').empty();
+    $('#details').append('<div><b>Root Note:</b> ' + m.root_note() + '</br>');
+    $('#details').append('<div><b>Scale:</b> ' + m.scale_type() + '</br>');
 }
 
 function displayParameters() {

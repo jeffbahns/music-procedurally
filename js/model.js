@@ -26,3 +26,17 @@ Model.prototype.progress = function() {
     this.grid.update(alive);
 }
 
+
+
+// getters
+Model.prototype.scale = function() {
+    return this.musicModel.base_scale.root_note + " " + this.musicModel.base_scale.type;
+}
+
+Model.prototype.root_note = function() {
+    return this.musicModel.base_scale.root_note;    
+}
+
+Model.prototype.scale_type = function() {
+    return this.musicModel.base_scale.type;
+}

@@ -46,6 +46,9 @@ function randomScale() {
     return new Scale(randomRootNote(), randomScaleType())
 }
 
+function randomScale(size) {
+    return new Scale(randomRootNote(), randomScaleType(), size)
+}
 var concatArraysUniqueWithSort = function (thisArray, otherArray) {
     var newArray = thisArray.concat(otherArray).sort(function (a, b) {
         return a > b ? 1 : a < b ? -1 : 0;
