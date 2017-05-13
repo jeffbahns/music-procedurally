@@ -16,13 +16,21 @@
     <script src="js/main.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   </head>
-<body>
+<body  bgcolor="#FF0000">
 
   <div class="panel-body" align="center">
     <div id="grid"></div>
     <button class="btn btn-success" onclick="play()">Start</button>
     <button class="btn btn-danger" onclick="pause()">Pause</button>
+    <button class="btn btn-info" onclick="new_shit()">Regenerate</button>
+
     <div id="details"></div>
+
+    <div id="input-details">
+      <br><br><br>
+          <b>Seed:</b><input type="text" id="seed" value="123"><br>
+    </div>
+
   </div>
 </body>
 
