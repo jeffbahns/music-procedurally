@@ -26,6 +26,7 @@ var scheduleAheadTime = 0.1;
 var test_instr = new Instrument("leadsynth", context, 300);
 test_instr.preset(0);
 var m;
+var seed;
 
 
 $(document).ready(function () {
@@ -33,10 +34,13 @@ $(document).ready(function () {
 });
 
 function new_shit() {
-    console.log("Hello world");
+    $('#grid').empty();
     //s = new Scale('A', 'major-pentatonic', 12);
-    m = new Model(context, 10,10);
+    seed = document.getElementById("seed").value;
+
+    m = new Model(context, seed, 10, 10);
     console.log(m.scale());
+    console.log(seed);
     display();
 }
 
@@ -109,63 +113,6 @@ function reset() {
     generateSong();
 }
 
-// could probably do this in better way, but this does a fair job of setting up a quick ensemble
-function setupInstruments(num_instruments) {
-    var sequencer = new Sequence(bar_length, base_scale.size());
-    var instrument = new Instrument("leadsynth", context, 300);
-    var scale = new Scale(base_scale.root_note, base_scale.type);
-    scale.dropOctave();
-    var role = new Role(scale, sequencer, context, instrument);
-    role_stack.push(role);
-
-    //return;
-
-    //drums
-    createDrums();
-
-    //instrument 1 - bass type synth
-    var sequencer = new Sequence(bar_length, base_scale.size());
-    var instrument = new Instrument("synth", context, 300);
-    var scale = new Scale(base_scale.root_note, base_scale.type);
-    scale.dropOctave();
-    scale.dropOctave();
-    scale.dropOctave();
-    scale.dropOctave();
-    var role = new Role(scale, sequencer, context, new Instrument("bass-synth", context));
-    role_stack.push(role);
-
-    //instrument 2 - lead type synth
-    //var sequencer = new Sequence(bar_length, base_scale.size());
-    var instrument = new Instrument("lead-synth", context, 300);
-    var scale = new Scale(base_scale.root_note, base_scale.type);
-    scale.dropOctave();
-    var role = new Role(scale, sequencer, context, instrument);
-    role_stack.push(role);
-
-    //instrument 3
-    //instrument 1 - bass type synth
-    var sequencer = new Sequence(bar_length, base_scale.size() + 5);
-    var instrument = new Instrument("synth", context, 300);
-    var scale = new Scale(base_scale.root_note, base_scale.type);
-    scale.dropOctave();
-    scale.dropOctave();
-    scale.dropOctave();
-    var role = new Role(scale, sequencer, context, new Instrument("mid-synth", context));
-    role_stack.push(role);
-}
-
-function createDrums() {
-    // kick drum
-    var sequencer = new Sequence(bar_length, 3);
-    var role = new Role(base_scale, sequencer, context, new Instrument("kick", context));
-    role_stack.push(role);
-
-    // snare
-    var sequencer = new Sequence(bar_length, 2); //4
-    var role = new Role(base_scale, sequencer, context, new Instrument("snare", context));
-    role_stack.push(role);
-}
-
 // generates a tempo/pace for the music
 function generateTempo() {
     tempo = randomInt(40, 180);
@@ -218,12 +165,11 @@ function display() {
     $('#details').empty();
     $('#details').append('<div><b>Root Note:</b> ' + m.root_note() + '</br>');
     $('#details').append('<div><b>Scale:</b> ' + m.scale_type() + '</br>');
+    $('#details').append('<div><b>Seed:</b> ' + seed + '</br>');
 }
 
 function displayParameters() {
     $('#details').empty();
-
-
     $('#details').append('<div><b>Root Note:</b> ' + base_scale.root_note + '</br>');
     $('#details').append('<div><b>Scale:</b> ' + base_scale.type + '</br>');
 

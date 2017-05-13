@@ -1,11 +1,13 @@
-var Model = function(context, rows = 8, cols = 8) {
+var Model = function(context, seed, rows = 8, cols = 8) {
+    this.context = context;
+    this.seed = seed % 512;
+    
     this.rows = rows;
     this.cols = cols;
-    this.context = context;
-    this.instr = [];
+
     this.matrix = new Matrix(rows, cols);
-    this.grid = new MusicGrid(rows, cols);
     this.musicModel = new MusicModel(context, rows, cols);
+    this.grid = new MusicGrid(rows, cols);
     this.grid.drawGrid();
     this.currentCol = 0;
     this.progress();
@@ -26,8 +28,6 @@ Model.prototype.progress = function() {
     alive = this.matrix.progress();
     this.grid.update(alive, this.currentCol);
 }
-
-
 
 // getters
 Model.prototype.scale = function() {
