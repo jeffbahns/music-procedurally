@@ -1,4 +1,4 @@
-var Model = function(context, rows=8, cols=8) {
+var Model = function(context, rows = 8, cols = 8) {
     this.rows = rows;
     this.cols = cols;
     this.context = context;
@@ -13,9 +13,10 @@ var Model = function(context, rows=8, cols=8) {
 
 Model.prototype.play = function() {
     if (this.currentCol == this.cols) {
-	this.progress();
-	this.currentCol = 0;
+        this.progress();
+        this.currentCol = 0;
     }
+    this.grid.update(alive, this.currentCol);
     this.musicModel.play(this.matrix, this.currentCol);
     this.currentCol += 1;
     console.log("current col ", this.currentCol)
@@ -23,7 +24,7 @@ Model.prototype.play = function() {
 
 Model.prototype.progress = function() {
     alive = this.matrix.progress();
-    this.grid.update(alive);
+    this.grid.update(alive, this.currentCol);
 }
 
 
@@ -34,7 +35,7 @@ Model.prototype.scale = function() {
 }
 
 Model.prototype.root_note = function() {
-    return this.musicModel.base_scale.root_note;    
+    return this.musicModel.base_scale.root_note;
 }
 
 Model.prototype.scale_type = function() {

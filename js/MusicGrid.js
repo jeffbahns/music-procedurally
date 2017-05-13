@@ -55,15 +55,16 @@ var MusicGrid = function(r=8, c=8) {
     /**
      * Update function
      * input: array of points that are in the grid i.e. [ [row,col], [row,col], [row,col] ]
+              The current row the note is playing on
      **/
-    MusicGrid.update = function(x) {
+    MusicGrid.update = function(x, y) {
         if (!arguments.length) return matrixData;
         matrixData = [];
-        if(matrixUpdate()){}
+        if(matrixUpdate(y)){}
         for (var i in x) {
             matrixData.push(node(x[i][0], x[i][1]));
         }
-        if(matrixUpdate()){}
+        if(matrixUpdate(y)){}
         return MusicGrid;
     };
 
@@ -109,11 +110,13 @@ var MusicGrid = function(r=8, c=8) {
             y: ypos,
             width: width,
             height: height,
-            opacity: 1
+            opacity: 1,
+            row: row,
+            col: col
         };
     }
 
-    function matrixUpdate() {
+    function matrixUpdate(tickCol) {
         var rect = gridSVG.selectAll(".mat_square")
             .data(matrixData);
 
@@ -132,7 +135,14 @@ var MusicGrid = function(r=8, c=8) {
                 return d.height;
             })
             .style("opacity", 1)
-            .style("fill", "red");
+            .style("fill", function(d){
+                if ( d.col == tickCol){
+                  return "green"
+                }
+                else{
+                  return "red"
+                }
+            });
 
         // rect.transition().duration(350)
         //     .style("opacity", function(d) {
@@ -143,6 +153,19 @@ var MusicGrid = function(r=8, c=8) {
             .style("opacity", 1e-6)
             // .transition()
             .remove();
+
+        // d3.selectAll(".square").sel
+        //   // d.call(function(square){
+        //   //   console.log(square);
+        //   //   if(square.col == tickCol){
+        //   //     console.log(square);
+        //   //   }
+        //   //   else{
+        //   //
+        //   //   }
+        //   // });
+        //
+        // });
 
         return true;
     }
