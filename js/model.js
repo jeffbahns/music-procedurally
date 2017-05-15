@@ -1,11 +1,11 @@
 var Model = function(context, seed, rows = 8, cols = 8) {
     this.context = context;
     this.seed = seed % 512;
-    
+
     this.rows = rows;
     this.cols = cols;
 
-    this.matrix = new Matrix(rows, cols);
+    this.matrix = new Matrix(seed, rows, cols);
     this.musicModel = new MusicModel(context, rows, cols);
     this.grid = new MusicGrid(rows, cols);
     this.grid.drawGrid();

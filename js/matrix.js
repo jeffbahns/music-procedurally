@@ -1,11 +1,11 @@
 // data model for v2
 //based on some combination of conway's game of life and probabilistic bizness
 
-var Matrix = function(rows = 8, cols = 8) {
+var Matrix = function(seed, rows = 8, cols = 8) {
     this.rows = rows;
     this.cols = cols;
     this.matrix;
-    this.seed = this.intToBinary(541);
+    this.seed = this.intToBinary(seed);
     this.initializeMatrix();
     this.currentCellR = 0;
 }

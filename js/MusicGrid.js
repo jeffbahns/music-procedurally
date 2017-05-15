@@ -5,6 +5,8 @@ var MusicGrid = function(r=8, c=8) {
         gridCols = c,
         gridRows = r,
         squarePadding = 0,
+        svgHeight = squareHeight*r+2,
+        svgWidth = squareWidth*c+2,
         svgSize = svgSizeUpdate(); // assuming the grid is a square.
 
     /** Matrix variables **/
@@ -13,14 +15,14 @@ var MusicGrid = function(r=8, c=8) {
     /** Grid SVG that holds each square **/
     var gridSVG = d3.select("#grid").append("svg")
         .attr("class", "svgGrid")
-        .attr("width", svgSize + "px")
-        .attr("height", svgSize + "px");
+        .attr("width", svgWidth + "px")
+        .attr("height", svgHeight + "px");
 
 
     /** Initalizer **/
     MusicGrid.drawGrid = function() {
-        gridSVG.attr("width", svgSize + "px")
-            .attr("height", svgSize + "px");
+        gridSVG.attr("width", svgWidth + "px")
+            .attr("height", svgHeight + "px");
 
         var data = gridData();
         var row = gridSVG.selectAll(".row")

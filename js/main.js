@@ -38,7 +38,7 @@ function new_shit() {
     //s = new Scale('A', 'major-pentatonic', 12);
     seed = document.getElementById("seed").value;
 
-    m = new Model(context, seed, 10, 10);
+    m = new Model(context, seed, 10, 20);
     console.log(m.scale());
     console.log(seed);
     display();
