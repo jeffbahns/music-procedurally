@@ -1,12 +1,12 @@
 var Model = function(context, seed, rows = 8, cols = 8) {
     this.context = context;
-    this.seed = seed % 256;
+    this.seed = seed % Math.pow(2,16);
 
     this.rows = rows;
     this.cols = cols;
 
     this.matrix = new Matrix(this.seed, rows, cols);
-    this.musicModel = new MusicModel(context, seed, rows, cols);
+    this.musicModel = new MusicModel(context, this.seed, rows, cols);
     this.grid = new MusicGrid(rows, cols);
     this.grid.drawGrid();
     this.currentCol = 0;

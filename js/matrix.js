@@ -5,7 +5,7 @@ var Matrix = function(seed, rows = 8, cols = 8) {
     this.rows = rows;
     this.cols = cols;
     this.seed = this.intToBinary(seed);
-    console.log("Shit", this.seed);
+    console.log("Assigned Seed: ", this.seed);
     this.matrix;
     this.initializeMatrix();
     this.currentCellR = 0;
@@ -199,13 +199,13 @@ Matrix.prototype.intToBinary = function(x) {
     x = (x-bit)/2;
     binNum.push(bit);
   }
-  while(binNum.length != 8){
+  while(binNum.length != 16){
     binNum.unshift(0);
   }
-  for(var i = 0; i < 64; i++){
+  for(var i = 0; i < 32; i++){
     bitArray = bitArray.concat(binNum);
   }
-  return bitArray;
+  return binNum;
 }
 
 Matrix.prototype.binaryToInt = function(x) {
