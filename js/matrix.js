@@ -84,12 +84,13 @@ Matrix.prototype.conwaysGOL = function() {
             if (_isFilled(this.matrix, i + 1, j + 1)) neighbors[8] = 1;
             // console.log("Seed: ", seed);
 
-            var nbr = this.binaryToInt(neighbors);
+            var nbr = this.binaryToInt(neighbors) % 16;
             // console.log(nbr);
             if ( nbr == 0){
               alive = 0;
             }else{
-              alive = this.seed[nbr];
+		console.log("accessing index", nbr, "of seed length", this.seed.length, "which is", this.seed[nbr]);
+		alive = this.seed[nbr];
             }
             // console.log("seed here", this.seed[nbr]);
 
@@ -205,7 +206,7 @@ Matrix.prototype.intToBinary = function(x) {
   for(var i = 0; i < 32; i++){
     bitArray = bitArray.concat(binNum);
   }
-  return binNum;
+    return binNum.reverse();
 }
 
 Matrix.prototype.binaryToInt = function(x) {

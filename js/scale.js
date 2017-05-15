@@ -53,7 +53,6 @@ Scale.prototype.generateScale = function() {
 	    scale[Object.keys(notes)[note_index]+(i.toString())] = notes[Object.keys(notes)[note_index]]*Math.pow(2,i);
 	}
     }
-    console.log(scale);
     return scale;
 };
 
