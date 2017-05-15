@@ -1,10 +1,10 @@
-var MusicModel = function(context, rows=8, cols=8) {
+var MusicModel = function(context, seed, rows=8, cols=8) {
     this.rows = rows;
     this.cols = cols;
     this.context = context;
     this.instr = [];
     this.initializeInstruments();
-    this.matrix = new Matrix(rows, cols);
+    this.matrix = new Matrix(seed, rows, cols);
     //this.base_scale = new Scale('F', 'major-naturalminor', this.matrix.rows);
     this.base_scale = randomScale(this.matrix.rows);
     console.log(this.base_scale.notes)
@@ -37,7 +37,7 @@ MusicModel.prototype.playInstrumentsByColumn = function(column) {
 	if (to_play[i] == 0) {
 	    //this.instr[to_play[i]].play(1,1);
 	} else {
-	    this.instr[to_play[i]].play(-1, notes[to_play[i] % num_notes]);	    
+	    this.instr[to_play[i]].play(-1, notes[to_play[i] % num_notes]);
 	}
     }
 

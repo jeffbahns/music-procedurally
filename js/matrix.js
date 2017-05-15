@@ -4,8 +4,9 @@
 var Matrix = function(seed, rows = 8, cols = 8) {
     this.rows = rows;
     this.cols = cols;
-    this.matrix;
     this.seed = this.intToBinary(seed);
+    console.log("Shit", this.seed);
+    this.matrix;
     this.initializeMatrix();
     this.currentCellR = 0;
 }
@@ -81,17 +82,17 @@ Matrix.prototype.conwaysGOL = function() {
             if (_isFilled(this.matrix, i + 1, j - 1)) neighbors[6] = 1;
             if (_isFilled(this.matrix, i + 1, j)) neighbors[7] = 1;
             if (_isFilled(this.matrix, i + 1, j + 1)) neighbors[8] = 1;
+            // console.log("Seed: ", seed);
 
-            alive = this.seed[this.binaryToInt(neighbors)]
+            var nbr = this.binaryToInt(neighbors);
+            // console.log(nbr);
+            if ( nbr == 0){
+              alive = 0;
+            }else{
+              alive = this.seed[nbr];
+            }
+            // console.log("seed here", this.seed[nbr]);
 
-            // if (this.matrix[i][j]) { // if alive
-            //     alive = neighbors == 2 || neighbors == 3 ? 1 : 0;
-            // } else {
-            //     alive = neighbors == 3 ? 1 : 0;
-            // }
-            // var m = this.intToBinary(neighbors)
-            // console.log(m);
-            // console.log(this.binaryToInt(m));
             newMatrix[i][j] = alive;
 
             if (alive) {
@@ -190,12 +191,21 @@ Matrix.prototype.print = function() {
 }
 
 Matrix.prototype.intToBinary = function(x) {
-  var binNum = (x >>> 0).toString(2);
-  var arr = binNum.split("").map(Number);
-  for (var i = arr.length; i<9; i++){
-    arr.unshift(0);
+  var binNum = [];
+  var bitArray = [];
+  var bit = 0;
+  while(x !== 0){
+    bit = x%2;
+    x = (x-bit)/2;
+    binNum.push(bit);
   }
-  return arr;
+  while(binNum.length != 8){
+    binNum.unshift(0);
+  }
+  for(var i = 0; i < 64; i++){
+    bitArray = bitArray.concat(binNum);
+  }
+  return bitArray;
 }
 
 Matrix.prototype.binaryToInt = function(x) {
