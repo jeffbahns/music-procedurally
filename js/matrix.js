@@ -4,7 +4,7 @@
 var Matrix = function(seed, rows = 8, cols = 8) {
     this.rows = rows;
     this.cols = cols;
-    this.seed = this.intToBinary(seed%16);
+    this.seed = this.intToBinary(seed);
     console.log("Assigned Seed: ", this.seed);
     this.matrix;
     this.initializeMatrix();
@@ -87,7 +87,8 @@ Matrix.prototype.conwaysGOL = function() {
             var nbr = this.binaryToInt(neighbors) % 16;
             // console.log(nbr);
             if ( nbr == 0){
-              alive = 0;
+		//alive = 0;
+		alive = this.seed[nbr];
             }else{
 		//console.log("accessing index", nbr, "of seed length", this.seed.length, "which is", this.seed[nbr]);
 		alive = this.seed[nbr];
@@ -102,6 +103,18 @@ Matrix.prototype.conwaysGOL = function() {
         }
     }
     this.matrix = newMatrix;
+    return alive_cells;
+}
+
+Matrix.prototype.aliveCells = function() {
+    alive_cells = [];
+    for (i = 0; i < this.rows; i++) {
+        for (j = 0; j < this.cols; j++) {
+	    if (this.matrix[i][j]) {
+                alive_cells.push(new Array(i, j));
+            }
+	}
+    }
     return alive_cells;
 }
 
@@ -204,9 +217,9 @@ Matrix.prototype.intToBinary = function(x) {
   while(binNum.length != 16){
     binNum.unshift(0);
   }
-  for(var i = 0; i < 32; i++){
-    bitArray = bitArray.concat(binNum);
-  }
+    //for(var i = 0; i < 32; i++){
+    //bitArray = bitArray.concat(binNum);
+    //}
     return binNum.reverse();
 }
 

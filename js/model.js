@@ -11,24 +11,27 @@ var Model = function(context, seed, rows = 8, cols = 8) {
     this.grid.drawGrid();
     this.currentCol = 0;
     this.matrix.print();
-    this.progress();
+    this.grid.update(this.matrix.aliveCells(), this.currentCol);
+    //this.progress();
 }
 
 Model.prototype.play = function() {
+    this.progress();
     if (this.currentCol == this.cols) {
-        this.progress();
+        //this.progress();
         this.currentCol = 0;
     }
-    this.grid.update(alive, this.currentCol);
+    
+    this.grid.update(this.matrix.aliveCells(), this.currentCol);
     this.musicModel.play(this.matrix, this.currentCol);
     this.currentCol += 1;
     console.log("current col ", this.currentCol)
 }
 
 Model.prototype.progress = function() {
-    alive = this.matrix.progress();
+    this.matrix.progress();
     console.log(alive);
-    this.grid.update(alive, this.currentCol);
+    this.grid.update(this.matrix.aliveCells(), this.currentCol);
 }
 
 // getters

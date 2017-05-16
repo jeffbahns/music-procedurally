@@ -34,7 +34,13 @@ var cols;
 var root;
 var scale;
 
+var dope_seeds = [
+    12390121,
+    
+]
+
 $(document).ready(function () {
+    // add scale and root notes to front end select boxes
     $('#scale_type').append("<option value=\"random\">Random (default)</option>");
     for (var i = 0; i < Object.keys(scales).length; i++) {
 	$('#scale_type').append("<option value=\"" + Object.keys(scales)[i] + "\">" + Object.keys(scales)[i] +  "</option>");
@@ -43,7 +49,6 @@ $(document).ready(function () {
     for (var i = 0; i < Object.keys(notes).length; i++) {
 	$('#scale_root').append("<option value=\"" + Object.keys(notes)[i] + "\">" + Object.keys(notes)[i] +  "</option>");
     }
-    console.log("fuck");
     new_shit();
 });
 
