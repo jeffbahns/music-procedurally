@@ -43,12 +43,26 @@ function randomScaleType() {
 }
 
 function randomScale() {
-    return new Scale(randomRootNote(), randomScaleType())
+    return new Scale(randomRootNote(), randomScaleType());
 }
 
 function randomScale(size) {
-    return new Scale(randomRootNote(), randomScaleType(), size)
+    return new Scale(randomRootNote(), randomScaleType(), size);
 }
+
+function randomSeed(length) {
+    var bitArray = [];
+    for (var i = 0; i < length; i++) {
+	bitArray.push(randomInt(0, 2) == 0 ? 1 : 0);
+    }
+    return bitArray
+}
+
+function binaryToInt(x) {
+    var val = x.join("");
+    return parseInt(val, 2);
+}
+
 var concatArraysUniqueWithSort = function (thisArray, otherArray) {
     var newArray = thisArray.concat(otherArray).sort(function (a, b) {
         return a > b ? 1 : a < b ? -1 : 0;

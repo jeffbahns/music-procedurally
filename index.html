@@ -26,14 +26,24 @@
 	  <b>Root Note:</b><br><select id="scale_root"></select><br><br>
 	  <b>Scale:</b><br><select id="scale_type"></select><br><br>
 
-	  <b>Seed:</b><br><input type="text" id="seed" value="123"><br><br>
+	  <!-- <b>Seed:</b><br><input type="text" id="seed" value="606060"><br><br> -->
 	  <b>Rows:</b><br><input type="text" id="rows" value="10"><br><br>
 	  <b>Columns:</b><br><input type="text" id="columns" value="10"><br><br>
+	  <b>Tempo:</b><br><input type="text" id="tempo" value="120"><br><br>
 
 
 	  <button class="btn btn-success" onclick="play()">Start</button>
 	  <button class="btn btn-danger" onclick="pause()">Pause</button>
-	  <button class="btn btn-info" onclick="new_shit()">Regenerate</button>
+	  <button class="btn btn-info" onclick="new_shit()">Regenerate</button><br><br>
+	  <p><b>Information</b><br>
+	    This program uses the seed number to generate rules on how each cell will either live, die, or come alive<br><br>
+	    The seeded numbers are anywhere between 0 and 2^512 (~154 digit #), randomly generated each time the game is restarted<br><br>
+	    Each row represents a different note (frequency) of the scale that is built at the beginning. You can select
+	    a scale and root note, or let them be randomized<br><br>
+	    Each column represents a time step, at which every row that is alive will be played as a note<br><br>
+
+	    
+	  </p>
 	</div>
 
       </div>

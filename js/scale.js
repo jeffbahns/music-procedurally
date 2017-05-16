@@ -31,7 +31,6 @@ var Scale = function(root_note, type, size=5) {
     this.type = type;
     this.size = size;
     this.notes = this.generateScale();
-
 };
 
 // from the root note of the scale and what type of scale it is,

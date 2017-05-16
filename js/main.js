@@ -17,7 +17,7 @@ var role_stack = [];
 // timing related
 var position = 0;
 var startTime = context.currentTime + 0.100;
-var tempo = 150; // BPM
+var tempo; // BPM
 var quarterNoteTime = 60 / tempo;
 var bar_length = 8;
 var nextNoteTime = 0.0;
@@ -32,11 +32,13 @@ var seed;
 var rows;
 var cols;
 var root;
+var scale_type;
 var scale;
 
 var dope_seeds = [
     12390121,
-
+    606060,
+    909090
 ]
 
 $(document).ready(function () {
@@ -54,16 +56,37 @@ $(document).ready(function () {
 });
 
 function new_shit() {
+    console.log("seed?:", binaryToInt(randomSeed(512)));
+    
     $('#grid').empty();
-    console.log(document.getElementById("scale_type").value);
-    seed = document.getElementById("seed").value;
+    //seed = document.getElementById("seed").value;
     rows = document.getElementById("rows").value;
     cols = document.getElementById("columns").value;
-
-
-    m = new Model(context, seed, rows, cols);
+    scale_type = document.getElementById("scale_type").value;
+    root = document.getElementById("scale_root").value;
+    tempo = document.getElementById("tempo").value;
+    console.log(scale_type, root);
+    if (scale_type == "random" ) {
+	if (root == "random") {
+	    console.log("making random scale");
+	    scale = randomScale(rows);
+	} else {
+	    console.log("making scale with random type but root of", root);
+	    scale = new Scale(root, randomScaleType(), rows);
+	}
+    } else if (root == "random") {
+	console.log("making scale with random root but type of", scale_type);
+	scale = new Scale(randomRootNote(), scale_type, rows);
+    } else {
+	console.log(root, scale_type, "hellyeah");
+	scale = new Scale(root, scale_type, rows);
+    }
+    //scale = Scale('A', 'chromatic', rows);
+    console.log(scale.root_note, "is root", scale.type, "is type");
+    
+    m = new Model(context, seed, scale, rows, cols);
     console.log(m.scale());
-    console.log(seed);
+    console.log(m.getSeed());
     d3.selectAll('.square').on("click", function(d){
         m.addSquare(d);
     });
@@ -189,9 +212,12 @@ function muteRole(index) {
 
 function display() {
     $('#details').empty();
+    
     $('#details').append('<div><b>Root Note:</b> ' + m.root_note() + '</br>');
     $('#details').append('<div><b>Scale:</b> ' + m.scale_type() + '</br>');
-    $('#details').append('<div><b>Seed:</b> ' + seed + '</br>');
+    $('#details').append('<div><b>Tempo:</b> ' + tempo + '</br>');
+    $('#details').append('<div><b>Seed:</b> ' + m.getSeed() + '</br>');
+
 }
 
 function displayParameters() {

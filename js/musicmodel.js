@@ -1,4 +1,4 @@
-var MusicModel = function(context, matrix, rows=8, cols=8) {
+var MusicModel = function(context, matrix, scale, rows=8, cols=8) {
     this.rows = rows;
     this.cols = cols;
     this.context = context;
@@ -6,7 +6,7 @@ var MusicModel = function(context, matrix, rows=8, cols=8) {
     this.initializeInstruments();
     this.matrix = matrix;
     //this.base_scale = new Scale('F', 'major-naturalminor', this.matrix.rows);
-    this.base_scale = randomScale(this.matrix.rows);
+    this.base_scale = scale;
     console.log(this.base_scale.notes)
 }
 

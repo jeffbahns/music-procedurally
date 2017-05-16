@@ -4,12 +4,12 @@
 var Matrix = function(seed, rows = 8, cols = 8) {
     this.rows = rows;
     this.cols = cols;
-    this.seed = this.intToBinary(seed);
+    //this.seed = this.intToBinary(seed);
+    this.seed = this.randomSeed(512);
     console.log("Assigned Seed: ", this.seed);
     this.matrix;
     this.initializeMatrix();
     this.currentCellR = 0;
-
 }
 
 // initialize a fresh matrix
@@ -85,7 +85,7 @@ Matrix.prototype.conwaysGOL = function() {
             if (_isFilled(this.matrix, i + 1, j + 1)) neighbors[3] = 1;
             // console.log("Seed: ", seed);
 
-            var nbr = this.binaryToInt(neighbors) % 16;
+            var nbr = this.binaryToInt(neighbors);// % 16;
             // console.log(nbr);
             if (nbr == 0) {
                 alive = 0;
@@ -231,4 +231,18 @@ Matrix.prototype.intToBinary = function(x) {
 Matrix.prototype.binaryToInt = function(x) {
     var val = x.join("");
     return parseInt(val, 2);
+}
+
+
+Matrix.prototype.randomSeed = function(length) { // length in bits
+    var bitArray = [];
+    for (var i = 0; i < length; i++) {
+	var probability = randomInt(0, 10);
+	bitArray.push(randomInt(0, probability) == 0 ? 1 : 0);
+    }
+    return bitArray
+}
+
+Matrix.prototype.getSeed = function() {
+    return this.binaryToInt(this.seed);
 }

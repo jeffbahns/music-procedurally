@@ -1,4 +1,4 @@
-var Model = function(context, seed, rows = 8, cols = 8) {
+var Model = function(context, seed, scale, rows = 8, cols = 8) {
     this.context = context;
     this.seed = seed % Math.pow(2,16);
 
@@ -6,7 +6,7 @@ var Model = function(context, seed, rows = 8, cols = 8) {
     this.cols = cols;
 
     this.matrix = new Matrix(this.seed, rows, cols);
-    this.musicModel = new MusicModel(context, this.matrix, rows, cols);
+    this.musicModel = new MusicModel(context, this.matrix, scale, rows, cols);
     this.grid = new MusicGrid(rows, cols);
     this.grid.drawGrid();
     this.currentCol = 0;
@@ -43,6 +43,10 @@ Model.prototype.root_note = function() {
 
 Model.prototype.scale_type = function() {
     return this.musicModel.base_scale.type;
+}
+
+Model.prototype.getSeed = function() {
+    return this.matrix.getSeed();
 }
 
 Model.prototype.addSquare = function(d) {

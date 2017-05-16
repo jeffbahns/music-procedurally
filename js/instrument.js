@@ -162,7 +162,7 @@ Instrument.prototype.playOscillator = function(freq) {
 
     this.gain.gain.cancelScheduledValues(this.context.currentTime);
     this.gain.gain.setValueAtTime(1, this.context.currentTime);
-    this.gain.gain.linearRampToValueAtTime(0, this.context.currentTime + .25);
+    this.gain.gain.linearRampToValueAtTime(0, this.context.currentTime + .22);
 
     this.osc.frequency.value = freq;
     this.osc.type = this.wave_type;
