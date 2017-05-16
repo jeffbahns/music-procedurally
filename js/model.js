@@ -16,9 +16,8 @@ var Model = function(context, seed, rows = 8, cols = 8) {
 }
 
 Model.prototype.play = function() {
-    this.progress();
     if (this.currentCol == this.cols) {
-        //this.progress();
+        this.progress();
         this.currentCol = 0;
     }
     
