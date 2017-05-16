@@ -1,4 +1,4 @@
-var MusicModel = function(context, matrix,  seed, rows=8, cols=8) {
+var MusicModel = function(context, matrix, rows=8, cols=8) {
     this.rows = rows;
     this.cols = cols;
     this.context = context;

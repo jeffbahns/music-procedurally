@@ -4,7 +4,7 @@
 var Matrix = function(seed, rows = 8, cols = 8) {
     this.rows = rows;
     this.cols = cols;
-    this.seed = this.intToBinary(seed);
+    this.seed = this.intToBinary(seed%16);
     console.log("Assigned Seed: ", this.seed);
     this.matrix;
     this.initializeMatrix();
@@ -89,7 +89,7 @@ Matrix.prototype.conwaysGOL = function() {
             if ( nbr == 0){
               alive = 0;
             }else{
-		console.log("accessing index", nbr, "of seed length", this.seed.length, "which is", this.seed[nbr]);
+		//console.log("accessing index", nbr, "of seed length", this.seed.length, "which is", this.seed[nbr]);
 		alive = this.seed[nbr];
             }
             // console.log("seed here", this.seed[nbr]);
@@ -110,6 +110,7 @@ Matrix.prototype.randomStartingState = function() {
         var row = "" + i + ": ";
         for (j = 0; j < this.cols; j++) {
             this.matrix[i][j] = randomInt(0, 5) == 0 ? 1 : 0; // 1 in 4 chaance i think
+	    //this.matrix[i][j] = 1;
         }
     }
 }

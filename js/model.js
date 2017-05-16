@@ -6,10 +6,11 @@ var Model = function(context, seed, rows = 8, cols = 8) {
     this.cols = cols;
 
     this.matrix = new Matrix(this.seed, rows, cols);
-    this.musicModel = new MusicModel(context, this.matrix, this.seed, rows, cols);
+    this.musicModel = new MusicModel(context, this.matrix, rows, cols);
     this.grid = new MusicGrid(rows, cols);
     this.grid.drawGrid();
     this.currentCol = 0;
+    this.matrix.print();
     this.progress();
 }
 
@@ -26,6 +27,7 @@ Model.prototype.play = function() {
 
 Model.prototype.progress = function() {
     alive = this.matrix.progress();
+    console.log(alive);
     this.grid.update(alive, this.currentCol);
 }
 

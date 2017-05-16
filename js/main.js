@@ -25,20 +25,37 @@ var scheduleAheadTime = 0.1;
 
 var test_instr = new Instrument("leadsynth", context, 300);
 test_instr.preset(0);
+
+// model variables
 var m;
 var seed;
-
+var rows;
+var cols;
+var root;
+var scale;
 
 $(document).ready(function () {
+    $('#scale_type').append("<option value=\"random\">Random (default)</option>");
+    for (var i = 0; i < Object.keys(scales).length; i++) {
+	$('#scale_type').append("<option value=\"" + Object.keys(scales)[i] + "\">" + Object.keys(scales)[i] +  "</option>");
+    }
+    $('#scale_root').append("<option value=\"random\">Random (default)</option>");
+    for (var i = 0; i < Object.keys(notes).length; i++) {
+	$('#scale_root').append("<option value=\"" + Object.keys(notes)[i] + "\">" + Object.keys(notes)[i] +  "</option>");
+    }
+    console.log("fuck");
     new_shit();
 });
 
 function new_shit() {
     $('#grid').empty();
-    //s = new Scale('A', 'major-pentatonic', 12);
+    console.log(document.getElementById("scale_type").value);
     seed = document.getElementById("seed").value;
-
-    m = new Model(context, seed, 10, 20);
+    rows = document.getElementById("rows").value;
+    cols = document.getElementById("columns").value;
+    
+    
+    m = new Model(context, seed, rows, cols);
     console.log(m.scale());
     console.log(seed);
     display();
