@@ -35,20 +35,12 @@
 	  <button class="btn btn-success" onclick="play()">Start</button>
 	  <button class="btn btn-danger" onclick="pause()">Pause</button>
 	  <button class="btn btn-info" onclick="new_shit()">Regenerate</button><br><br>
-	  <p><b>Information</b><br>
-	    This program uses the seed number to generate rules on how each cell will either live, die, or come alive<br><br>
-	    The seeded numbers are anywhere between 0 and 2^512 (~154 digit #), randomly generated each time the game is restarted<br><br>
-	    Each row represents a different note (frequency) of the scale that is built at the beginning. You can select
-	    a scale and root note, or let them be randomized<br><br>
-	    Each column represents a time step, at which every row that is alive will be played as a note<br><br>
 
-	    
-	  </p>
 	</div>
 
       </div>
 
-      <div class="col-lg-6">
+      <div class="col-lg-5">
 	<div id="details"></div>
 	<div id="grid"></div>
 
@@ -56,6 +48,13 @@
       </div>
 
       <div class="col-lg-3">
+	<p><b>Information</b><br>
+	  This program uses the seed number to generate rules on how each cell will either live, die, or come alive<br><br>
+	  The seeded numbers are anywhere between 0 and 2^512 (~154 digit #), randomly generated each time the game is restarted<br><br>
+	  Each row represents a different note (frequency) of the scale that is built at the beginning. You can select
+	  a scale and root note, or let them be randomized<br><br>
+	  Each column represents a time step, at which every row that is alive will be played as a note<br><br>
+	</p>
       </div>
       
     </div>
