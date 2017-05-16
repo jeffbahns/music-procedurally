@@ -11,6 +11,9 @@ var Model = function(context, seed, rows = 8, cols = 8) {
     this.grid.drawGrid();
     this.currentCol = 0;
     this.matrix.print();
+
+    d3.selectAll('.square').on("click", this.addSquare);
+
     this.progress();
 }
 
@@ -22,7 +25,7 @@ Model.prototype.play = function() {
     this.grid.update(alive, this.currentCol);
     this.musicModel.play(this.matrix, this.currentCol);
     this.currentCol += 1;
-    console.log("current col ", this.currentCol)
+    console.log("current col ", this.currentCol);
 }
 
 Model.prototype.progress = function() {
@@ -42,4 +45,10 @@ Model.prototype.root_note = function() {
 
 Model.prototype.scale_type = function() {
     return this.musicModel.base_scale.type;
+}
+
+Model.prototype.addSquare = function(d) {
+  alive.push(new Array(d.row, d.col));
+  this.matrix.addSquareToMatrix(d);
+  // this.grid.update(alive, this.currentCol);
 }

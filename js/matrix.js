@@ -4,11 +4,12 @@
 var Matrix = function(seed, rows = 8, cols = 8) {
     this.rows = rows;
     this.cols = cols;
-    this.seed = this.intToBinary(seed%16);
+    this.seed = this.intToBinary(seed);
     console.log("Assigned Seed: ", this.seed);
     this.matrix;
     this.initializeMatrix();
     this.currentCellR = 0;
+
 }
 
 // initialize a fresh matrix
@@ -73,15 +74,15 @@ Matrix.prototype.conwaysGOL = function() {
             var neighbors = [0,0,0,0,0,0,0,0,0],
                 alive = 0;
 
-            if (_isFilled(this.matrix, i - 1, j - 1)) neighbors[0] = 1;
+            if (_isFilled(this.matrix, i - 1, j - 1)) neighbors[4] = 1;
             if (_isFilled(this.matrix, i - 1, j)) neighbors[1] = 1;
-            if (_isFilled(this.matrix, i - 1, j + 1)) neighbors[2] = 1;
-            if (_isFilled(this.matrix, i, j - 1)) neighbors[3] = 1;
-            if (_isFilled(this.matrix, i, j)) neighbors[4] = 1;
-            if (_isFilled(this.matrix, i, j + 1)) neighbors[5] = 1;
-            if (_isFilled(this.matrix, i + 1, j - 1)) neighbors[6] = 1;
-            if (_isFilled(this.matrix, i + 1, j)) neighbors[7] = 1;
-            if (_isFilled(this.matrix, i + 1, j + 1)) neighbors[8] = 1;
+            if (_isFilled(this.matrix, i - 1, j + 1)) neighbors[5] = 1;
+            if (_isFilled(this.matrix, i, j - 1)) neighbors[7] = 1;
+            if (_isFilled(this.matrix, i, j)) neighbors[0] = 1;
+            if (_isFilled(this.matrix, i, j + 1)) neighbors[6] = 1;
+            if (_isFilled(this.matrix, i + 1, j - 1)) neighbors[8] = 1;
+            if (_isFilled(this.matrix, i + 1, j)) neighbors[2] = 1;
+            if (_isFilled(this.matrix, i + 1, j + 1)) neighbors[3] = 1;
             // console.log("Seed: ", seed);
 
             var nbr = this.binaryToInt(neighbors) % 16;
@@ -192,6 +193,14 @@ Matrix.prototype.print = function() {
     console.log(total);
 }
 
+Matrix.prototype.addSquare = function(d) {
+  alive.push(new Array(d.row, d.col));
+}
+
+Matrix.prototype.addSquareToMatrix = function(d){
+  this.matrix[d.row][d.col] = 1;
+}
+
 Matrix.prototype.intToBinary = function(x) {
   var binNum = [];
   var bitArray = [];
@@ -204,9 +213,9 @@ Matrix.prototype.intToBinary = function(x) {
   while(binNum.length != 16){
     binNum.unshift(0);
   }
-  for(var i = 0; i < 32; i++){
-    bitArray = bitArray.concat(binNum);
-  }
+  // for(var i = 0; i < 32; i++){
+  //   bitArray = bitArray.concat(binNum);
+  // }
     return binNum.reverse();
 }
 
