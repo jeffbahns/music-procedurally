@@ -58,8 +58,8 @@ function new_shit() {
     seed = document.getElementById("seed").value;
     rows = document.getElementById("rows").value;
     cols = document.getElementById("columns").value;
-    
-    
+
+
     m = new Model(context, seed, rows, cols);
     console.log(m.scale());
     console.log(seed);
