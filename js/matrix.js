@@ -123,7 +123,7 @@ Matrix.prototype.randomStartingState = function() {
     for (i = 0; i < this.rows; i++) {
         var row = "" + i + ": ";
         for (j = 0; j < this.cols; j++) {
-            this.matrix[i][j] = randomInt(0, 5) == 0 ? 1 : 0; // 1 in 4 chaance i think
+            this.matrix[i][j] = randomInt(0, 15) == 0 ? 1 : 0; // 1 in 4 chaance i think
             //this.matrix[i][j] = 1;
         }
     }
@@ -207,7 +207,13 @@ Matrix.prototype.print = function() {
 }
 
 Matrix.prototype.addSquareToMatrix = function(d) {
-    this.matrix[d.row][d.col] = 1;
+    if (this.matrix[d.row][d.col] == 1) {
+	this.matrix[d.row][d.col] = 0;
+    }
+    else {
+	this.matrix[d.row][d.col] = 1;
+    }
+
 }
 
 Matrix.prototype.intToBinary = function(x) {
