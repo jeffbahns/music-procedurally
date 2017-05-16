@@ -36,7 +36,7 @@ var scale;
 
 var dope_seeds = [
     12390121,
-    
+
 ]
 
 $(document).ready(function () {
@@ -50,6 +50,7 @@ $(document).ready(function () {
 	$('#scale_root').append("<option value=\"" + Object.keys(notes)[i] + "\">" + Object.keys(notes)[i] +  "</option>");
     }
     new_shit();
+
 });
 
 function new_shit() {
@@ -63,6 +64,9 @@ function new_shit() {
     m = new Model(context, seed, rows, cols);
     console.log(m.scale());
     console.log(seed);
+    d3.selectAll('.square').on("click", function(d){
+        m.addSquare(d);
+    });
     display();
 }
 
