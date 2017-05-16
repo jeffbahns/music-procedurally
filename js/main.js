@@ -17,7 +17,7 @@ var role_stack = [];
 // timing related
 var position = 0;
 var startTime = context.currentTime + 0.100;
-var tempo = 100; // BPM
+var tempo = 150; // BPM
 var quarterNoteTime = 60 / tempo;
 var bar_length = 8;
 var nextNoteTime = 0.0;

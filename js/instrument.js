@@ -14,7 +14,7 @@ var oscillator_waves = [
 
 var presets = [
     // decay, wave type
-    [400, oscillator_waves[0]]
+    [300, oscillator_waves[0]]
 ]
 
 // Instrument constructor
@@ -158,31 +158,20 @@ Instrument.prototype.triggerSnare = function(time) {
 
 Instrument.prototype.playOscillator = function(freq) {
     this.setupOscillator();
-    /*
-    this.noise = this.context.createBufferSource();
-    this.noise.buffer = this.oscillatorReverbBuffer();
-    var noiseFilter = this.context.createBiquadFilter();
-    this.noise.connect(noiseFilter);
-    this.noiseEnvelope = this.context.createGain();
-    noiseFilter.connect(this.noiseEnvelope);
-    this.noiseEnvelope.connect(this.context.destination);
-    this.noiseEnvelope.gain.setValueAtTime(1, this.context.currentTime);
-    this.noiseEnvelope.gain.exponentialRampToValueAtTime(0.01, this.context.currentTime + 0.2);
-    this.noise.start(this.context.currentTime)
-    */
     this.gain.connect(this.context.destination);
-    this.gain.gain.setValueAtTime(0, this.context.currentTime);
-    this.gain.gain.linearRampToValueAtTime(1, this.context.currentTime + this.attack / 1000);
-    this.gain.gain.linearRampToValueAtTime(0, this.context.currentTime + this.decay / 1000);
+
+    this.gain.gain.cancelScheduledValues(this.context.currentTime);
+    this.gain.gain.setValueAtTime(1, this.context.currentTime);
+    this.gain.gain.linearRampToValueAtTime(0, this.context.currentTime + .25);
 
     this.osc.frequency.value = freq;
     this.osc.type = this.wave_type;
     this.osc.connect(this.gain);
     this.osc.start(this.context.currentTime);
+    this.osc.stop(this.context.currentTime + .25);
 
-    this.osc.stop(this.context.currentTime + 100);
-    //this.osc.disconnect(this.gain);
-    //this.gain.disconnect(this.context);
+    //this.osc.disconnect(this.gain, this.context.currentTime + .25);
+    //this.gain.disconnect(this.context, this.context.currentTime + .25);
     /* doesn't really work
     setTimeout(function() {
         this.osc.stop(0);

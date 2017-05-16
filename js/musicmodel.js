@@ -35,7 +35,7 @@ MusicModel.prototype.playInstrumentsByColumn = function(column) {
     for (var i = 0; i < to_play.length; i++) {
 	console.log("THIS: ", Object.keys(this.base_scale.notes)[to_play[i]%num_notes])
 	if (to_play[i] == 0) {
-	    this.instr[to_play[i]].play(1,1);
+	    //this.instr[to_play[i]].play(1,1);
 	} else {
 	    this.instr[to_play[i]].play(-1, notes[to_play[i] % num_notes]);
 	}
