@@ -18,7 +18,7 @@ Matrix.prototype.initializeMatrix = function() {
     for (i = 0; i < this.rows; i++) {
         this.matrix[i] = new Array();
         for (j = 0; j < this.cols; j++) {
-            this.matrix[i][j] = 1;
+            this.matrix[i][j] = 0;
         }
     }
     this.randomStartingState();

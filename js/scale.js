@@ -45,13 +45,14 @@ Scale.prototype.generateScale = function() {
     // use root index and steps to build scale
     var iter = Math.ceil(this.size / scale_steps.length);
     
-    for (var i = -1; i < iter-1; i++) {
+    for (var i = 0; i < iter-1; i++) {
 	//console.log(Object.keys(scale).length, this.size);
 	for (var j = 0; j < scale_steps.length && Object.keys(scale).length < this.size; j++) {
 	    var note_index = (root_index + scale_steps[j]) %  Object.keys(notes).length;
 	    scale[Object.keys(notes)[note_index]+(i.toString())] = notes[Object.keys(notes)[note_index]]*Math.pow(2,i);
 	}
     }
+    console.log("built", scale);
     return scale;
 };
 
